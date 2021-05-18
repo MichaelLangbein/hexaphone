@@ -12,6 +12,8 @@ import { Synthesizer } from './Synthesizer';
 Renderer.registerPlugin('batch', BatchRenderer);
 Application.registerPlugin(TickerPlugin);
 
+
+
 export interface BoardState {
     app: Application;
     board: Board;
@@ -24,11 +26,13 @@ export interface BoardState {
     tickerListener: (deltaT: number) => void;
 }
 
-export const defaultKeyDescription = (frequency: number, alpha: number, beta: number, gamma: number) => {
+
+export const defaultLabelFunction = (frequency: number, alpha: number, beta: number, gamma: number) => {
     const baseFrequency = 440;
     const n = getNthToneFromFrequency(baseFrequency, frequency);
     return `${Math.round(n)}`;
 };
+
 
 export const defaultFillColor = (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => {
     const n = getNthToneFromFrequency(440, frequency);
@@ -48,6 +52,7 @@ export const defaultFillColor = (frequency: number, x: number, y: number, alpha:
     return parseInt(hex.replace(/^#/, ''), 16);;
 };
 
+
 export const defaultLineColor = (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => {
     const hex = defaultFillColor(frequency, x, y, alpha, beta, gamma);
     const hsv = convert.hex.hsv(hex.toString(16));
@@ -57,13 +62,12 @@ export const defaultLineColor = (frequency: number, x: number, y: number, alpha:
 
 
 
-
-export function newBoard(
-    canvas: HTMLCanvasElement, width: number, height: number,
-    keyDescription: (frequency: number, alpha: number, beta: number, gamma: number) => string,
-    fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
-    lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number): BoardState {
-
+export function initBoard(
+        canvas: HTMLCanvasElement, width: number, height: number,
+        keyDescription: (frequency: number, alpha: number, beta: number, gamma: number) => string,
+        fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
+        lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number
+    ): BoardState {
     const app: Application = new Application({
         view: canvas,
         width, height,
@@ -100,4 +104,5 @@ export function newBoard(
 
     return { app, board, synth, keyDescription, fillColor, lineColor, clickListener, touchListener, tickerListener };
 }
+
 

@@ -19,14 +19,14 @@ export class Board implements Renderable {
 
     constructor(
         private synth: Synthesizer,
-        keyDescription: (frequency: number, alpha: number, beta: number, gamma: number) => string,
+        labelFunction: (frequency: number, alpha: number, beta: number, gamma: number) => string,
         fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
         lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
         nrKeysPerRow: number, nrRows: number, scale: number) {
 
         this.container = new Container();
         this.scale = scale;
-        this.reshape(nrKeysPerRow, nrRows, scale, keyDescription, fillColor, lineColor);
+        this.reshape(nrKeysPerRow, nrRows, scale, labelFunction, fillColor, lineColor);
     }
 
     click(evt: MouseEvent): void {
@@ -82,7 +82,7 @@ export class Board implements Renderable {
     }
 
     reshape(nrKeysPerRow: number, nrRows: number, scale: number,
-        keyDescription: (frequency: number, alpha: number, beta: number, gamma: number) => string,
+        labelFunction: (frequency: number, alpha: number, beta: number, gamma: number) => string,
         fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
         lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number) {
         while (this.container.children[0]) {
@@ -101,7 +101,7 @@ export class Board implements Renderable {
                 const [xPos, yPos] = hexCoordsToXyCoords(scale, alpha, beta, gamma);
                 const fc = fillColor(frequency, xPos, yPos, alpha, beta, gamma);
                 const lc = lineColor(frequency, xPos, yPos, alpha, beta, gamma)
-                const key = new Key(this.synth, fc, lc, xPos, yPos, scale, scale * 0.0125, frequency, keyDescription(frequency, alpha, beta, gamma));
+                const key = new Key(this.synth, fc, lc, xPos, yPos, scale, scale * 0.0125, frequency, labelFunction(frequency, alpha, beta, gamma));
                 this.keys[index] = key;
             }
         }
