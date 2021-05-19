@@ -1,6 +1,4 @@
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
+import { IonApp } from '@ionic/react';
 import PlayView from './components/PlayView';
 
 /* Core CSS required for Ionic components to work properly */
@@ -18,16 +16,7 @@ import './variables.css';
 
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <PlayView />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
+    <PlayView />
   </IonApp>
 );
 

@@ -31,7 +31,6 @@ class PlayView extends React.Component<{}, BoardState> {
       showTimbreModal: false,
       showStartModal: false,
     }
-
   }
 
 
@@ -43,31 +42,31 @@ class PlayView extends React.Component<{}, BoardState> {
 
           <IonModal isOpen={this.state.showTimbreModal}>
             <TimbreSelection timbre={this.state.timbre} onTimbreSelected={(t: Timbre) => {
-              this.setState({
-                ...this.state,
+              this.setState((oldState, props) => ({
+                ...oldState,
                 timbre: t,
                 showTimbreModal: false
-              });
+              }));
             }}></TimbreSelection>
           </IonModal>
 
           <IonModal isOpen={this.state.showLabelsModal}>
             <LabelsSelection labels={this.state.labels} onLabelsSelected={(l: KeyLabels) => {
-              this.setState({
-                ...this.state,
+              this.setState((oldState, props) => (({
+                ...oldState,
                 labels: l,
                 showLabelsModal: false
-              });
+              })));
             }}></LabelsSelection>
           </IonModal>
 
           <IonModal isOpen={this.state.showLabelsModal}>
             <LabelsSelection labels={this.state.labels} onLabelsSelected={(l: KeyLabels) => {
-              this.setState({
-                ...this.state,
+              this.setState((oldState, props) => ({
+                ...oldState,
                 labels: l,
                 showLabelsModal: false
-              });
+              }));
             }}></LabelsSelection>
           </IonModal>
 
@@ -80,10 +79,10 @@ class PlayView extends React.Component<{}, BoardState> {
               <IonIcon icon={arrowDownCircle} />
             </IonFabButton>
             <IonFabList>
-              <IonFabButton color="light" onClick={() => this.setState({ ...this.state, showTimbreModal: true })}>
+              <IonFabButton color="light" onClick={() => this.setState((oldState, props) => ({ ...oldState, showTimbreModal: true }))}>
                 <IonIcon icon={musicalNote}></IonIcon>
               </IonFabButton>
-              <IonFabButton color="light" onClick={() => this.setState({ ...this.state, showLabelsModal: true })}>
+              <IonFabButton color="light" onClick={() => this.setState((oldState, props) => ({ ...oldState, showLabelsModal: true }))}>
                 <IonIcon icon={text}></IonIcon>
               </IonFabButton>
               <IonFabButton color="light">

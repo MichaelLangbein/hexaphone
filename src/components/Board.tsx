@@ -30,7 +30,6 @@ export class Board extends React.Component<{labels: KeyLabels, timbre: Timbre}, 
         return boardState;
     }
 
-
     private updateApp(canvas: HTMLCanvasElement, props: {labels: KeyLabels, timbre: Timbre}) {
         const width = canvas.clientWidth;
         const height = canvas.clientHeight;
@@ -46,7 +45,6 @@ export class Board extends React.Component<{labels: KeyLabels, timbre: Timbre}, 
             this.boardState = this.initBoard(canvas, props);
         }
     }
-    
 
     shouldComponentUpdate(newProps: {labels: KeyLabels, timbre: Timbre}) {
         if (this.canvas.current) {
