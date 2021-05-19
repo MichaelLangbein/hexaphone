@@ -1,8 +1,9 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonFooter, IonFab, IonFabButton, IonIcon, IonFabList, useIonModal, IonModal } from '@ionic/react';
+import { IonContent, IonPage, IonFab, IonFabButton, IonIcon, IonFabList, IonModal } from '@ionic/react';
 import { arrowDownCircle, help, musicalNote, text } from 'ionicons/icons';
 import React from 'react';
 import { KeyLabels } from '../hexaphone/helpers/music';
 import { Timbre } from '../hexaphone/Synthesizer';
+import { Ad } from './Ad';
 import { Board } from './Board';
 import { LabelsSelection } from './LabelsSelection';
 import { TimbreSelection } from './TimbreSelection';
@@ -72,6 +73,7 @@ class PlayView extends React.Component<{}, BoardState> {
 
 
           <Board labels={this.state.labels} timbre={this.state.timbre}></Board>
+          <Ad></Ad>
 
 
           <IonFab vertical="top" horizontal="end" slot="fixed">
@@ -79,13 +81,13 @@ class PlayView extends React.Component<{}, BoardState> {
               <IonIcon icon={arrowDownCircle} />
             </IonFabButton>
             <IonFabList>
-              <IonFabButton color="light" onClick={() => this.setState((oldState, props) => ({ ...oldState, showTimbreModal: true }))}>
+              <IonFabButton color="medium" onClick={() => this.setState((oldState, props) => ({ ...oldState, showTimbreModal: true }))}>
                 <IonIcon icon={musicalNote}></IonIcon>
               </IonFabButton>
-              <IonFabButton color="light" onClick={() => this.setState((oldState, props) => ({ ...oldState, showLabelsModal: true }))}>
+              <IonFabButton color="medium" onClick={() => this.setState((oldState, props) => ({ ...oldState, showLabelsModal: true }))}>
                 <IonIcon icon={text}></IonIcon>
               </IonFabButton>
-              <IonFabButton color="light">
+              <IonFabButton color="medium">
                 <IonIcon icon={help}></IonIcon>
               </IonFabButton>
             </IonFabList>

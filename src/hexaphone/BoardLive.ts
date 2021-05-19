@@ -45,10 +45,19 @@ export const defaultFillColor = (frequency: number, x: number, y: number, alpha:
     }
     const p = l / 12;
 
-    const hMin = 90;
-    const hMax = 180;
-    const h = p * (hMax - hMin) + hMin;
-    const hex = convert.hsv.hex([h, 80, 80]);
+
+    const lightColor = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-light');
+    const mediumColor = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-medium');
+    const darkColor = getComputedStyle(document.documentElement).getPropertyValue('--ion-color-dark');
+    const lightColorHsv = convert.hex.hsv(lightColor);
+    const mediumColorHsv = convert.hex.hsv(mediumColor);
+    const darkColorHsv = convert.hex.hsv(darkColor);
+
+
+    const h = p * (darkColorHsv[0] - lightColorHsv[0]) + lightColorHsv[0];
+    const s = p * (darkColorHsv[1] - lightColorHsv[1]) + lightColorHsv[1];
+    const v = p * (darkColorHsv[2] - lightColorHsv[2]) + lightColorHsv[2];
+    const hex = convert.hsv.hex([h, s, v]);
     return parseInt(hex.replace(/^#/, ''), 16);;
 };
 
@@ -71,7 +80,8 @@ export function initBoard(
     const app: Application = new Application({
         view: canvas,
         width, height,
-        backgroundAlpha: 0
+        backgroundAlpha: 0,
+        antialias: true
     });
 
     const [keysPerRow, rows, scale] = getKeyboardLayout(width, height);

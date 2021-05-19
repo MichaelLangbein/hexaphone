@@ -15,6 +15,12 @@ export class Board extends React.Component<{labels: KeyLabels, timbre: Timbre}, 
          this.canvas = React.createRef<HTMLCanvasElement>();
     }
 
+    componentDidMount() {
+        if (this.canvas.current) {
+            this.boardState = this.initBoard(this.canvas.current, this.props);
+        }
+    }
+
     private initBoard(canvas: HTMLCanvasElement, props: { labels: KeyLabels; timbre: Timbre; }): BoardState {
         const keyDescription = (frequency: number) => {
             return getNoteName(frequency, props.labels);
@@ -22,7 +28,7 @@ export class Board extends React.Component<{labels: KeyLabels, timbre: Timbre}, 
         const fillColor = defaultFillColor;
         const lineColor = defaultLineColor;
 
-        const boardState = initBoard(canvas, canvas.clientWidth, canvas.clientHeight, keyDescription, fillColor, lineColor);
+        const boardState = initBoard(canvas, window.innerWidth, window.innerHeight, keyDescription, fillColor, lineColor);
         
         boardState.synth.setTimbre(this.props.timbre);
         boardState.synth.start();
@@ -36,6 +42,7 @@ export class Board extends React.Component<{labels: KeyLabels, timbre: Timbre}, 
         const [keysPerRow, rows, scale] = getKeyboardLayout(width, height);
 
         if (this.boardState) {
+            this.boardState.app.renderer.resize(width, height);
             const labelFunction = (frequency: number) => {
                 return getNoteName(frequency, props.labels);
             };
