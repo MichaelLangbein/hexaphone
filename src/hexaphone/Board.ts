@@ -3,7 +3,8 @@ import { Key } from './Key';
 import { getFrequencyNthTone } from './helpers/music';
 import { Renderable } from './Interfaces';
 import { Synthesizer } from './Synthesizer';
-import { getHexIndicesAround, hexCoordsToXyCoords, xyCoordsToHexCoords } from './helpers/hexIndex';
+import { getHexIndicesAround, getKeyboardLayout, hexCoordsToXyCoords, xyCoordsToHexCoords } from './helpers/hexIndex';
+import { createKeys } from './helpers/board';
 
 /**
  * Huge thanks to https://www.redblobgames.com/grids/hexagons/ !
@@ -14,19 +15,17 @@ export class Board implements Renderable {
 
     private keys: {[key: string]: Key} = {};
     private container: Container;
-    private scale: number;
+    private scale: number = 1;
     
 
     constructor(
-        private synth: Synthesizer,
+        private synth: Synthesizer, width: number, height: number,
         labelFunction: (frequency: number, alpha: number, beta: number, gamma: number) => string,
         fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
         lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
-        nrKeysPerRow: number, nrRows: number, scale: number) {
-
+    ) {
         this.container = new Container();
-        this.scale = scale;
-        this.reshape(nrKeysPerRow, nrRows, scale, labelFunction, fillColor, lineColor);
+        this.buildKeys(width, height, labelFunction, fillColor, lineColor);
     }
 
     click(evt: MouseEvent): void {
@@ -81,40 +80,27 @@ export class Board implements Renderable {
         }
     }
 
-    reshape(nrKeysPerRow: number, nrRows: number, scale: number,
+    buildKeys(
+        width: number, height: number,
         labelFunction: (frequency: number, alpha: number, beta: number, gamma: number) => string,
         fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
-        lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number) {
+        lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
+    ) {
         while (this.container.children[0]) {
-            this.container.removeChild(this.container.children[0]);
-        }
-     
-        const betaMin = Math.round(-nrRows / 2);
-        const betaMax = Math.round(nrRows / 2);
-        for (let beta = betaMin; beta < betaMax; beta++) {
-            const alphaMin = Math.round(- nrKeysPerRow / 2 - beta * 0.5);
-            const alphaMax = Math.round(nrKeysPerRow / 2 - beta * 0.5);
-            for (let alpha = alphaMin; alpha < alphaMax; alpha++) {
-                const gamma = - alpha - beta;
-                const index = `${alpha}/${beta}/${gamma}`;
-                const frequency = this.getFrequencyFromHexCoords(alpha, beta, gamma);
-                const [xPos, yPos] = hexCoordsToXyCoords(scale, alpha, beta, gamma);
-                const fc = fillColor(frequency, xPos, yPos, alpha, beta, gamma);
-                const lc = lineColor(frequency, xPos, yPos, alpha, beta, gamma)
-                const key = new Key(this.synth, fc, lc, xPos, yPos, scale, scale * 0.0125, frequency, labelFunction(frequency, alpha, beta, gamma));
-                this.keys[index] = key;
-            }
+            this.container.removeChildAt(0);
         }
 
-        for (const key of Object.values(this.keys)) {
+        const [keysPerRow, rows, scale] = getKeyboardLayout(width, height);
+        const keys = createKeys(keysPerRow, rows, scale, this.synth, labelFunction, fillColor, lineColor);
+        this.keys = keys;
+
+        for (const key of Object.values(keys)) {
             this.container.addChild(key.getDisplayObject());
         }
+
+        this.container.x = (width / 2) + (Math.sqrt(3) * scale / 2);
+        this.container.y = height / 2;
+        this.scale = scale;
     }
 
-    private getFrequencyFromHexCoords(alpha: number, beta: number, gamma: number): number {
-        return getFrequencyNthTone(
-            440,
-            3.5 * (alpha - gamma) + 0.5 * beta
-        );
-    }
 }

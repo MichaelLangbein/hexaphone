@@ -84,11 +84,8 @@ export function initBoard(
         antialias: true
     });
 
-    const [keysPerRow, rows, scale] = getKeyboardLayout(width, height);
     const synth = new Synthesizer();
-    const board = new Board(synth, keyDescription, fillColor, lineColor, keysPerRow, rows, scale);
-    board.getDisplayObject().x = (width / 2) + (Math.sqrt(3) * scale / 2);
-    board.getDisplayObject().y = height / 2;
+    const board = new Board(synth, width, height, keyDescription, fillColor, lineColor);
     app.stage.addChild(board.getDisplayObject());
 
     // on desktop
@@ -114,5 +111,6 @@ export function initBoard(
 
     return { app, board, synth, keyDescription, fillColor, lineColor, clickListener, touchListener, tickerListener };
 }
+
 
 

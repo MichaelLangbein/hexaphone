@@ -1,10 +1,10 @@
-import { IonContent, IonPage, IonFab, IonFabButton, IonIcon, IonFabList, IonModal } from '@ionic/react';
+import { IonContent, IonPage, IonFab, IonFabButton, IonIcon, IonFabList, IonModal, IonGrid, IonCol, IonRow, IonCardContent, IonCard } from '@ionic/react';
 import { arrowDownCircle, help, musicalNote, text } from 'ionicons/icons';
 import React from 'react';
 import { KeyLabels } from '../hexaphone/helpers/music';
 import { Timbre } from '../hexaphone/Synthesizer';
 import { Ad } from './Ad';
-import { Board } from './Board';
+import Board from './Board';
 import { LabelsSelection } from './LabelsSelection';
 import { TimbreSelection } from './TimbreSelection';
 import { Tutorial } from './Tutorial';
@@ -71,10 +71,8 @@ class PlayView extends React.Component<{}, BoardState> {
             }}></LabelsSelection>
           </IonModal>
 
-
           <Board labels={this.state.labels} timbre={this.state.timbre}></Board>
           <Ad></Ad>
-
 
           <IonFab vertical="top" horizontal="end" slot="fixed">
             <IonFabButton>
