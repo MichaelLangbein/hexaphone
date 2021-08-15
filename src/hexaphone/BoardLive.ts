@@ -5,7 +5,6 @@ import { TickerPlugin } from '@pixi/ticker';
 import * as convert from 'color-convert';
 
 import { Board } from './Board';
-import { getKeyboardLayout } from './helpers/hexIndex';
 import { getNthToneFromFrequency } from './helpers/music';
 import { Synthesizer } from './Synthesizer';
 
@@ -77,6 +76,8 @@ export function initBoard(
         fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
         lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number
     ): BoardState {
+
+
     const app: Application = new Application({
         view: canvas,
         width, height,

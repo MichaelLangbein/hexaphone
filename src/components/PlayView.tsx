@@ -1,4 +1,6 @@
-import { IonContent, IonPage, IonFab, IonFabButton, IonIcon, IonFabList, IonModal, IonGrid, IonCol, IonRow, IonCardContent, IonCard } from '@ionic/react';
+import { IonContent, IonPage, IonFab, IonFabButton, IonIcon,
+  IonFabList, IonModal, IonGrid, IonCol, IonRow, IonCardContent,
+  IonCard, IonButton } from '@ionic/react';
 import { arrowDownCircle, help, musicalNote, text } from 'ionicons/icons';
 import React from 'react';
 import { KeyLabels } from '../hexaphone/helpers/music';
@@ -41,6 +43,11 @@ class PlayView extends React.Component<{}, BoardState> {
       <IonPage>
         <IonContent fullscreen>
 
+        <IonModal isOpen={this.state.showTutorialModal}>
+            <Tutorial></Tutorial>
+            <Ad></Ad>
+          </IonModal>
+
           <IonModal isOpen={this.state.showTimbreModal}>
             <TimbreSelection timbre={this.state.timbre} onTimbreSelected={(t: Timbre) => {
               this.setState((oldState, props) => ({
@@ -49,6 +56,7 @@ class PlayView extends React.Component<{}, BoardState> {
                 showTimbreModal: false
               }));
             }}></TimbreSelection>
+            <Ad></Ad>
           </IonModal>
 
           <IonModal isOpen={this.state.showLabelsModal}>
@@ -59,6 +67,7 @@ class PlayView extends React.Component<{}, BoardState> {
                 showLabelsModal: false
               })));
             }}></LabelsSelection>
+            <Ad></Ad>
           </IonModal>
 
           <IonModal isOpen={this.state.showLabelsModal}>
@@ -69,10 +78,10 @@ class PlayView extends React.Component<{}, BoardState> {
                 showLabelsModal: false
               }));
             }}></LabelsSelection>
+            <Ad></Ad>
           </IonModal>
 
           <Board labels={this.state.labels} timbre={this.state.timbre}></Board>
-          <Ad></Ad>
 
           <IonFab vertical="top" horizontal="end" slot="fixed">
             <IonFabButton>
