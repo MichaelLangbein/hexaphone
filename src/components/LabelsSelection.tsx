@@ -1,42 +1,63 @@
 import React from 'react';
 import { IonItem, IonLabel, IonList, IonListHeader, IonRadioGroup, IonRadio } from '@ionic/react';
 import { KeyLabels } from '../hexaphone/helpers/music';
+import { BoardService } from '../state/board.svc';
 
 
-export const LabelsSelection: React.FC<{labels: KeyLabels, onLabelsSelected: (l: KeyLabels) => void}> = (props) => {
+export class LabelsSelection extends React.Component<{ boardSvc: BoardService, onLabelsSelected: () => void }, { labels: KeyLabels }> {
 
-    return (
-        <IonList>
-            <IonListHeader>
-                <IonLabel>
-                    Key labels
-            </IonLabel>
-            </IonListHeader>
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            labels: this.props.boardSvc.getLabels()
+        };
+    }
 
-            <IonRadioGroup value={props.labels}>
+    private getLabels() {
+        return this.state.labels;
+    }
 
-                <IonItem onClick={() => props.onLabelsSelected('major')}>
+    private setLabels(labels: KeyLabels) {
+        this.props.boardSvc.setLabels(labels); // change board
+        this.props.onLabelsSelected();  // notify parent
+        this.setState({ labels });  // update own state
+    }
+
+    render() {
+        return (
+            <IonList>
+                <IonListHeader>
                     <IonLabel>
-                        Major
+                        Key labels
                 </IonLabel>
-                    <IonRadio slot="start" value={'major'} />
-                </IonItem>
+                </IonListHeader>
+    
+                <IonRadioGroup value={this.getLabels() }>
+    
+                    <IonItem onClick={() => this.setLabels('major')}>
+                        <IonLabel>
+                            Major
+                    </IonLabel>
+                        <IonRadio slot="start" value={'major'} />
+                    </IonItem>
+    
+                    <IonItem onClick={() => this.setLabels('minor')}>
+                        <IonLabel>
+                            Minor
+                    </IonLabel>
+                        <IonRadio slot="start" value={'minor'} />
+                    </IonItem>
+    
+                    <IonItem onClick={() => this.setLabels('number')}>
+                        <IonLabel>
+                            Numbers
+                    </IonLabel>
+                        <IonRadio slot="start" value={'number'} />
+                    </IonItem>
+    
+                </IonRadioGroup>
+            </IonList>
+        )
+    }
 
-                <IonItem onClick={() => props.onLabelsSelected('minor')}>
-                    <IonLabel>
-                        Minor
-                </IonLabel>
-                    <IonRadio slot="start" value={'minor'} />
-                </IonItem>
-
-                <IonItem onClick={() => props.onLabelsSelected('number')}>
-                    <IonLabel>
-                        Numbers
-                </IonLabel>
-                    <IonRadio slot="start" value={'number'} />
-                </IonItem>
-
-            </IonRadioGroup>
-        </IonList>
-    )
 }

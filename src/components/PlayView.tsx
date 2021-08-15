@@ -1,41 +1,40 @@
-import { IonContent, IonPage, IonFab, IonFabButton, IonIcon,
-  IonFabList, IonModal, IonGrid, IonCol, IonRow, IonCardContent,
-  IonCard, IonButton } from '@ionic/react';
+import {
+  IonContent, IonPage, IonFab, IonFabButton, IonIcon,
+  IonFabList, IonModal
+} from '@ionic/react';
 import { arrowDownCircle, help, musicalNote, text } from 'ionicons/icons';
 import React from 'react';
-import { KeyLabels } from '../hexaphone/helpers/music';
-import { Timbre } from '../hexaphone/Synthesizer';
 import { Ad } from './Ad';
-import Board from './Board';
+import { Board } from './Board';
 import { LabelsSelection } from './LabelsSelection';
 import { TimbreSelection } from './TimbreSelection';
 import { Tutorial } from './Tutorial';
+import { BoardService } from '../state/board.svc';
 
 
-interface BoardState {
-  labels: KeyLabels;
-  timbre: Timbre;
+interface PlayViewState {
   showTutorialModal: boolean;
   showLabelsModal: boolean;
   showTimbreModal: boolean;
   showStartModal: boolean;
 }
 
+const boardSvc = new BoardService();
 
-class PlayView extends React.Component<{}, BoardState> {
+class PlayView extends React.Component<{}, PlayViewState> {
+
+  private boardContainer: React.RefObject<HTMLDivElement>;
 
   constructor(props: any) {
     super(props);
     this.state = {
-      labels: 'major',
-      timbre: 'piano',
       showTutorialModal: false,
       showLabelsModal: false,
       showTimbreModal: false,
-      showStartModal: false,
+      showStartModal: false, 
     }
+    this.boardContainer = React.createRef<HTMLDivElement>();
   }
-
 
   render() {
 
@@ -43,45 +42,34 @@ class PlayView extends React.Component<{}, BoardState> {
       <IonPage>
         <IonContent fullscreen>
 
-        <IonModal isOpen={this.state.showTutorialModal}>
+          <IonModal isOpen={this.state.showTutorialModal}>
             <Tutorial></Tutorial>
             <Ad></Ad>
           </IonModal>
 
           <IonModal isOpen={this.state.showTimbreModal}>
-            <TimbreSelection timbre={this.state.timbre} onTimbreSelected={(t: Timbre) => {
-              this.setState((oldState, props) => ({
-                ...oldState,
-                timbre: t,
+            <TimbreSelection boardSvc={boardSvc} onTimbreSelected={() => {
+              this.setState({
+                ...this.state,
                 showTimbreModal: false
-              }));
+              });
             }}></TimbreSelection>
             <Ad></Ad>
           </IonModal>
 
           <IonModal isOpen={this.state.showLabelsModal}>
-            <LabelsSelection labels={this.state.labels} onLabelsSelected={(l: KeyLabels) => {
-              this.setState((oldState, props) => (({
-                ...oldState,
-                labels: l,
+            <LabelsSelection boardSvc={boardSvc} onLabelsSelected={() => {
+              this.setState({
+                ...this.state,
                 showLabelsModal: false
-              })));
+              });
             }}></LabelsSelection>
             <Ad></Ad>
           </IonModal>
 
-          <IonModal isOpen={this.state.showLabelsModal}>
-            <LabelsSelection labels={this.state.labels} onLabelsSelected={(l: KeyLabels) => {
-              this.setState((oldState, props) => ({
-                ...oldState,
-                labels: l,
-                showLabelsModal: false
-              }));
-            }}></LabelsSelection>
-            <Ad></Ad>
-          </IonModal>
-
-          <Board labels={this.state.labels} timbre={this.state.timbre}></Board>
+          <div style={{ width: '100%', height: '100%' }}>
+            <Board boardSvc={boardSvc}></Board>
+          </div>
 
           <IonFab vertical="top" horizontal="end" slot="fixed">
             <IonFabButton>
