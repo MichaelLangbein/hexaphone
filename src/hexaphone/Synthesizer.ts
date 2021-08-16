@@ -1,6 +1,7 @@
 import { Compressor, Frequency, Limiter, PolySynth, Sampler,
     start, Synth, ToneAudioBuffer, ToneAudioNode, Transport } from 'tone';
 import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 
 export type Timbre = 'basic' | 'piano';
@@ -39,6 +40,7 @@ export class Synthesizer {
             const sampler = new Sampler({
                 urls: urls,
                 baseUrl: samplesBaseUrl,
+                release: 1,
                 onload: () => {
                     subscriber.next(true);
                     subscriber.complete();
@@ -63,9 +65,19 @@ export class Synthesizer {
 
     public setTimbre(timbre: Timbre): Observable<boolean> {
         this.timbre = timbre;
+
+        if (timbre === 'basic') {
+            this.polySynth.connect(this.globalOutput);
+            return of(true);
+        }
+
         if (!(this.timbre in this.samplers)) {
-            return this.loadSamplerData(timbre);
+            return this.loadSamplerData(timbre).pipe(map((success) => {
+                this.samplers[this.timbre].connect(this.globalOutput);
+                return success;
+            }));
         } else {
+            this.samplers[this.timbre].connect(this.globalOutput);
             return of(true);
         }
     }
@@ -77,11 +89,11 @@ export class Synthesizer {
 
     private getFileNames(timbre: Timbre) {
         const fileNames: {[key: string]: string} = {};
-        const names = Object.keys(remotePianoNoteTames);
+        const names = Object.keys(noteNames);
         for (let i = 0; i < names.length; i++) {
             if (i % 1 === 0) {
                 const name = names[i];
-                fileNames[name] = remotePianoNoteTames[name];
+                fileNames[name] = noteNames[name];
                 // fileNames[name] = new ToneAudioBuffer({
                 //     url: 'assets/samples/piano/' + pianoNoteNames[name],
                 //     onerror: (err: Error) => console.log('Some error ...')
@@ -92,22 +104,21 @@ export class Synthesizer {
     }
 }
 
-// samples from 'https://tonejs.github.io/audio/salamander/A5.mp3' 
-// http://freepats.zenvoid.org/Piano/acoustic-grand-piano.html could not be decoded properly.
-const remotePianoNoteTames: {[key: string]: string} = {
-    'A1': 'A1.mp3',
-    'A2': 'A2.mp3',
-    'A3': 'A3.mp3',
-    'A4': 'A4.mp3',
-    'A5': 'A5.mp3',
-    'A6': 'A6.mp3',
-    'A7': 'A7.mp3',
-    'C1': 'C1.mp3',
-    'C2': 'C2.mp3',
-    'C3': 'C3.mp3',
-    'C4': 'C4.mp3',
-    'C5': 'C5.mp3',
-    'C6': 'C6.mp3',
-    'C7': 'C7.mp3',
+ 
+const noteNames: {[key: string]: string} = {
+    'A1': 'A1.ogg',
+    'A2': 'A2.ogg',
+    'A3': 'A3.ogg',
+    'A4': 'A4.ogg',
+    'A5': 'A5.ogg',
+    'A6': 'A6.ogg',
+    'C1': 'C1.ogg',
+    'C2': 'C2.ogg',
+    'C3': 'C3.ogg',
+    'C4': 'C4.ogg',
+    'C5': 'C5.ogg',
+    'C6': 'C6.ogg',
+    'C7': 'C7.ogg',
 };
+
 

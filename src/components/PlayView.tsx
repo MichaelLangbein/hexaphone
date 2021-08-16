@@ -67,9 +67,7 @@ class PlayView extends React.Component<{}, PlayViewState> {
             <Ad></Ad>
           </IonModal>
 
-          <div style={{ width: '100%', height: '100%' }}>
-            <Board boardSvc={boardSvc}></Board>
-          </div>
+          <Board boardSvc={boardSvc}></Board>
 
           <IonFab vertical="top" horizontal="end" slot="fixed">
             <IonFabButton>

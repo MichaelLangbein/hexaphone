@@ -142,8 +142,17 @@ export class BoardService {
         this.synth.start();
     }
 
-    public setBoardSize(width: number, height: number): void {
-        this.app.renderer.resize(width, height);
+    public setBoardSize(width: number, height: number, setCanvasSizeToo = false): void {
+        if (width === this.width && height === this.height) return;
+        if (setCanvasSizeToo) {
+            this.canvas.width = width;
+            this.canvas.height = height;
+        }
+        this.width = width;
+        this.height = height;
+        this.app.renderer.resize(this.width, this.height);
+        const keyFunction = this.createKeyFunction(this.labels);
+        this.board.buildKeys(this.width, this.height, keyFunction, this.fillColor, this.lineColor);
     }
 
     public loadSamplerData(timbre: Timbre): Observable<boolean> {

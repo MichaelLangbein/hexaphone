@@ -1,10 +1,11 @@
 # TODOS
 
 1. Functional
-   1. Rotation / Scaling
+   1. Piano.mp3's: loaded, but silent. Try your samples from linux.
+   2. Loader while loading voices
+   3. Rotation / Scaling
       1. Board currently sized relative to window.innerHeight. Make that relative to ComponentHeight
          1. https://stackoverflow.com/questions/49058890/how-to-get-a-react-components-size-height-width-before-render
-   2. Loader while loading voices
 2. Tutorial
    1. Several slides of graphics
 3. Ads
