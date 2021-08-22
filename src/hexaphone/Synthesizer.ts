@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 
-export type Timbre = 'basic' | 'piano';
+export type Timbre = 'basic' | 'piano' | 'violin' | 'saxophone' | 'harp';
 
 
 export class Synthesizer {
@@ -89,23 +89,43 @@ export class Synthesizer {
 
     private getFileNames(timbre: Timbre) {
         const fileNames: {[key: string]: string} = {};
-        const names = Object.keys(noteNames);
-        for (let i = 0; i < names.length; i++) {
-            if (i % 1 === 0) {
-                const name = names[i];
-                fileNames[name] = noteNames[name];
-                // fileNames[name] = new ToneAudioBuffer({
-                //     url: 'assets/samples/piano/' + pianoNoteNames[name],
-                //     onerror: (err: Error) => console.log('Some error ...')
-                // });
-            }
+        switch (timbre) {
+            case 'piano':
+                const pnames = Object.keys(pianoNoteNames);
+                for (const name of pnames) {
+                    fileNames[name] = pianoNoteNames[name];
+                }
+                break;
+            case 'harp':
+                const hnames = Object.keys(harpNoteNames);
+                for (const name of hnames) {
+                    fileNames[name] = harpNoteNames[name];
+                }
+                break;
+            case 'saxophone':
+                const snames = Object.keys(saxNoteNames);
+                for (const name of snames) {
+                    fileNames[name] = saxNoteNames[name];
+                }
+                break;
+            case 'violin':
+                const vnames = Object.keys(violinNoteNames);
+                for (const name of vnames) {
+                    fileNames[name] = violinNoteNames[name];
+                }
+                break;
         }
         return fileNames;
+
+        // fileNames[name] = new ToneAudioBuffer({
+        //     url: 'assets/samples/piano/' + pianoNoteNames[name],
+        //     onerror: (err: Error) => console.log('Some error ...')
+        // });
     }
 }
 
  
-const noteNames: {[key: string]: string} = {
+const pianoNoteNames: {[key: string]: string} = {
     'A1': 'A1.ogg',
     'A2': 'A2.ogg',
     'A3': 'A3.ogg',
@@ -121,4 +141,28 @@ const noteNames: {[key: string]: string} = {
     'C7': 'C7.ogg',
 };
 
+const violinNoteNames: {[key: string]: string} = {
+    'A3': 'A3.ogg',
+    'A4': 'A4.ogg',
+    'A5': 'A5.ogg',
+    'A6': 'A6.ogg',
+    'C4': 'C4.ogg',
+    'C5': 'C5.ogg',
+    'C6': 'C6.ogg',
+    'C7': 'C7.ogg',
+};
 
+const saxNoteNames: {[key: string]: string} = {
+    'A3': 'A3.ogg',
+    'A4': 'A4.ogg',
+    'C3': 'C3.ogg',
+    'C4': 'C4.ogg',
+};
+
+const harpNoteNames: {[key: string]: string} = {
+    'A2': 'A2.ogg',
+    'A4': 'A4.ogg',
+    'A6': 'A6.ogg',
+    'C3': 'C3.ogg',
+    'C5': 'C5.ogg',
+};
