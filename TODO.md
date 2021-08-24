@@ -1,8 +1,11 @@
 # TODOS
 
-1. Tutorial
+1. Error on loading timbre when mobile
+2. Crackling sound
+3. Allow sweep motion
+4. Tutorial
    1. Several slides of graphics
-2. Ads
+5. Ads
    1. https://www.google.com/adsense/signup/new/lead?gsessionid=uxpeelM8BpKF43M0T1CYRTqnFejkFP-peAKHNHRAl2I
    2. Get a domain & hosting
       1. ionos de: https://www.ionos.de/server/vps?linkId=ct.btn.content-cards800684.cards.card.virtual-server-vps#tarife
@@ -15,4 +18,3 @@ Later
       1. Board currently sized relative to window.innerHeight. Make that relative to ComponentHeight
          1. https://stackoverflow.com/questions/49058890/how-to-get-a-react-components-size-height-width-before-render
    2. Highlight keys per chosen tonality
-   3. Crackling sound
