@@ -44,7 +44,6 @@ class PlayView extends React.Component<{}, PlayViewState> {
 
           <IonModal isOpen={this.state.showTutorialModal}>
             <Tutorial></Tutorial>
-            <Ad></Ad>
           </IonModal>
 
           <IonModal isOpen={this.state.showTimbreModal}>
@@ -54,7 +53,6 @@ class PlayView extends React.Component<{}, PlayViewState> {
                 showTimbreModal: false
               });
             }}></TimbreSelection>
-            <Ad></Ad>
           </IonModal>
 
           <IonModal isOpen={this.state.showLabelsModal}>
@@ -64,7 +62,6 @@ class PlayView extends React.Component<{}, PlayViewState> {
                 showLabelsModal: false
               });
             }}></LabelsSelection>
-            <Ad></Ad>
           </IonModal>
 
           <Board boardSvc={boardSvc}></Board>

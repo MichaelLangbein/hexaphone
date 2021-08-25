@@ -10,13 +10,12 @@ export class Ad extends Component {
 
     render() {
         return (
-            <ins 
-                className='addsbygoogle'
-                style={{ display: 'block' }}
-                data-ad-client=''
-                data-ad-slot=''
-                data-ad-format='auto'
-            />
+            <ins className="adsbygoogle"
+                style={{ display: "block" }}
+                data-ad-client="ca-pub-3884549024745388"
+                data-ad-slot="5363376547"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
         );
     }
 }
