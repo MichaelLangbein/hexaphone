@@ -15,7 +15,10 @@ export class Synthesizer {
     private timbre: Timbre = 'basic';
 
     constructor() {
-        this.globalOutput = new Compressor(0).toDestination();
+        // Compressor added before output to reduce crackling sound.
+        // If v > -30db, then v' = 30db + (v - 30dB)/3
+        // https://www.reddit.com/r/askscience/comments/243ucv/how_is_it_possible_to_have_negative_decibels/
+        this.globalOutput = new Compressor(-30, 3).toDestination();
         this.polySynth = new PolySynth(Synth).connect(this.globalOutput);
         this.samplers = {};
     }
