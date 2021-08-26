@@ -43,7 +43,7 @@ export class Board implements Renderable {
         }
     }
 
-    touch(touch: Touch): void {
+    touch(touch: Touch, preventRetouch = false): void {
         /**
          * touch.force: [0 .. 1], 0 if device does not support pressure
          * touch.radiusX: [css-pixels, same scale as touch.screenX]
@@ -60,9 +60,9 @@ export class Board implements Renderable {
                 if (hexCoordsCandidate === hexCoords) {
                     const key = this.keys[hexCoordsCandidate];
                     if (touch.force > 0) {
-                        key.touched(touch.force);
+                        key.touched(touch.force, preventRetouch);
                     } else {
-                        key.touched();
+                        key.touched(1.0, preventRetouch);
                     }
                     break;
                 }

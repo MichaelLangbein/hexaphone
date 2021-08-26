@@ -119,6 +119,15 @@ export class BoardService {
         };
         canvas.addEventListener('touchstart', touchListener);
 
+        canvas.addEventListener('touchmove', (evt) => {
+            for (let i = 0; i < evt.touches.length; i++) {
+                const touch = evt.touches[i];
+                board.touch(touch, true);
+            }
+            evt.preventDefault();
+        });
+
+
         const tickerListener = (deltaT: number) => {
             board.update(deltaT);
         };

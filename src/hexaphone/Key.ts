@@ -70,12 +70,12 @@ export class Key implements Renderable {
         }
     }
 
-    touched(force?: number): void {
-        if (force) {
-            this.synth.play(this.frequency, force);
-        } else {
-            this.synth.play(this.frequency, 1);
+    touched(force = 1.0, preventRetouch = false): void {
+        if (preventRetouch) {
+            if (this.glowing > 0) return;
         }
+        this.synth.play(this.frequency, force);
+    
         this.glowing = 0.5;
         this.hexagon.filters = [new AdvancedBloomFilter({
             bloomScale: 2,

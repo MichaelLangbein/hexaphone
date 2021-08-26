@@ -1,10 +1,9 @@
 # TODOS
 
-1. Crackling sound
-2. Allow sweep motion
-3. Tutorial
+
+1. Tutorial
    1. Several slides of graphics
-4. Ads
+2. Ads
    1. https://www.google.com/adsense/signup/new/lead?gsessionid=uxpeelM8BpKF43M0T1CYRTqnFejkFP-peAKHNHRAl2I
 
 
