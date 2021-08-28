@@ -33,11 +33,13 @@ export class Board extends React.Component<{ boardSvc: BoardService }, { showSta
     }
 
     componentDidMount() {
-        if (this.canvas.current) {
-            this.props.boardSvc.initBoard(
-                this.canvas.current, window.innerWidth, window.innerHeight,
-            );
-        }
+        setTimeout(() => {
+                if (this.canvas.current) {
+                    this.props.boardSvc.initBoard(
+                        this.canvas.current, window.innerWidth, window.innerHeight,
+                    );
+                }
+        }, 100);
     }
 
     render() {

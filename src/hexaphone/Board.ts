@@ -28,7 +28,7 @@ export class Board implements Renderable {
         this.buildKeys(width, height, labelFunction, fillColor, lineColor);
     }
 
-    click(evt: MouseEvent): void {
+    click(evt: MouseEvent, preventReclick = false): void {
         // note: this needs to be changed if there are other ui-elements, like headers, menus etc
         const x = evt.x - this.getDisplayObject().x;
         const y = evt.y - this.getDisplayObject().y;
@@ -38,7 +38,7 @@ export class Board implements Renderable {
         for (const candidateHexIndex in this.keys) {
             if (candidateHexIndex === hexIndex) {
                 const key = this.keys[candidateHexIndex];
-                key.touched();
+                key.touched(1.0, preventReclick);
             }
         }
     }

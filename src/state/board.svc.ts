@@ -10,7 +10,7 @@ import { getNoteName, getNthToneFromFrequency, KeyLabels } from '../hexaphone/he
 import { Synthesizer, Timbre } from '../hexaphone/Synthesizer';
 
 Renderer.registerPlugin('batch', BatchRenderer);
-Application.registerPlugin(TickerPlugin);
+// Application.registerPlugin(TickerPlugin);
 
 
 
@@ -50,7 +50,7 @@ export const defaultFillColor = (frequency: number, x: number, y: number, alpha:
 export const defaultLineColor = (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => {
     const hex = defaultFillColor(frequency, x, y, alpha, beta, gamma);
     const hsv = convert.hex.hsv(hex.toString(16));
-    const hex2 = convert.hsv.hex([hsv[0], 50, 50]);
+    const hex2 = convert.hsv.hex([hsv[0], hsv[1], 50]);
     return parseInt(hex2.replace(/^#/, ''), 16);
 };
 
@@ -80,20 +80,28 @@ export class BoardService {
     /* @ts-ignore */
     private touchListener: (evt: any) => void;
     /* @ts-ignore */
+    dragListener: (evt: any) => void;
+    /* @ts-ignore */
     private tickerListener: (deltaT: number) => void;
 
 
     public initBoard(
-        canvas: HTMLCanvasElement, width: number, height: number, labels: KeyLabels = 'number',
+        canvas: HTMLCanvasElement, width: number, height: number, labels: KeyLabels = 'major',
         fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number = defaultFillColor,
         lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number = defaultLineColor
     ): void {
+        if (this.app || this.board) {
+            console.error("App has already been created!");
+            return;
+        }
 
         const app: Application = new Application({
             view: canvas,
             width, height,
             backgroundAlpha: 0,
-            antialias: true
+            antialias: false,
+            powerPreference: 'high-performance',
+            // autoStart: true
         });
 
         const synth = new Synthesizer();
@@ -119,13 +127,14 @@ export class BoardService {
         };
         canvas.addEventListener('touchstart', touchListener);
 
-        canvas.addEventListener('touchmove', (evt) => {
+        const dragListener = (evt: any) => {
             for (let i = 0; i < evt.touches.length; i++) {
                 const touch = evt.touches[i];
                 board.touch(touch, true);
             }
             evt.preventDefault();
-        });
+        };
+        canvas.addEventListener('touchmove', dragListener);
 
 
         const tickerListener = (deltaT: number) => {
@@ -144,6 +153,7 @@ export class BoardService {
         this.lineColor = lineColor;
         this.clickListener = clickListener;
         this.touchListener = touchListener;
+        this.dragListener = dragListener;
         this.tickerListener = tickerListener;
     }
 
