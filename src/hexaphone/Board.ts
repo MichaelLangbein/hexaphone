@@ -1,6 +1,6 @@
 import { Container } from '@pixi/display';
 import { Key } from './Key';
-import { getFrequencyNthTone } from './helpers/music';
+import { getFrequencyNthTone, Tonality } from './helpers/music';
 import { Renderable } from './Interfaces';
 import { Synthesizer } from './Synthesizer';
 import { getHexIndicesAround, getKeyboardLayout, hexCoordsToXyCoords, xyCoordsToHexCoords } from './helpers/hexIndex';
@@ -38,7 +38,7 @@ export class Board implements Renderable {
         for (const candidateHexIndex in this.keys) {
             if (candidateHexIndex === hexIndex) {
                 const key = this.keys[candidateHexIndex];
-                key.touched(1.0, preventReclick);
+                key.touched(1.0, x, y, preventReclick);
             }
         }
     }
@@ -60,9 +60,9 @@ export class Board implements Renderable {
                 if (hexCoordsCandidate === hexCoords) {
                     const key = this.keys[hexCoordsCandidate];
                     if (touch.force > 0) {
-                        key.touched(touch.force, preventRetouch);
+                        key.touched(touch.force, x, y, preventRetouch);
                     } else {
-                        key.touched(1.0, preventRetouch);
+                        key.touched(1.0, x, y, preventRetouch);
                     }
                     break;
                 }
@@ -85,13 +85,14 @@ export class Board implements Renderable {
         labelFunction: (frequency: number, alpha: number, beta: number, gamma: number) => string,
         fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
         lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
+        tonality?: Tonality
     ) {
         while (this.container.children[0]) {
             this.container.removeChildAt(0);
         }
 
         const [keysPerRow, rows, scale] = getKeyboardLayout(width, height);
-        const keys = createKeys(keysPerRow, rows, scale, this.synth, labelFunction, fillColor, lineColor);
+        const keys = createKeys(keysPerRow, rows, scale, this.synth, labelFunction, fillColor, lineColor, tonality);
         this.keys = keys;
 
         for (const key of Object.values(keys)) {

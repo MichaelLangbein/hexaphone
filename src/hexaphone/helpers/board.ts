@@ -1,5 +1,5 @@
 import { hexCoordsToXyCoords } from "./hexIndex";
-import { getFrequencyNthTone } from "./music";
+import { getFrequencyNthTone, isInKey, Tonality } from "./music";
 import { Key } from "../Key";
 import { Synthesizer } from "../Synthesizer";
 
@@ -10,7 +10,8 @@ export function createKeys(
     synth: Synthesizer,
     labelFunction: (frequency: number, alpha: number, beta: number, gamma: number) => string,
     fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
-    lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number) 
+    lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
+    tonality?: Tonality) 
 : {[index: string]: Key} {
 
     const keys: {[index: string]: Key} = {};
@@ -26,8 +27,12 @@ export function createKeys(
             const frequency = getFrequencyFromHexCoords(alpha, beta, gamma);
             const [xPos, yPos] = hexCoordsToXyCoords(scale, alpha, beta, gamma);
             const fc = fillColor(frequency, xPos, yPos, alpha, beta, gamma);
-            const lc = lineColor(frequency, xPos, yPos, alpha, beta, gamma)
-            const key = new Key(synth, fc, lc, xPos, yPos, scale, scale * 0.0125, frequency, labelFunction(frequency, alpha, beta, gamma));
+            const lc = lineColor(frequency, xPos, yPos, alpha, beta, gamma);
+            let scaleFactor = 1.0;
+            if (tonality && !isInKey(frequency, tonality)) {
+                scaleFactor = 0.7;
+            }
+            const key = new Key(synth, fc, lc, xPos, yPos, scale * scaleFactor, scale * 0.0125, frequency, labelFunction(frequency, alpha, beta, gamma));
             keys[index] = key;
         }
     }

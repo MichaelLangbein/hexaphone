@@ -24,3 +24,26 @@ export function getNoteName(frequency: number, labels: KeyLabels): string {
     }
     return nString;
 }
+
+export type Tonality =  null |
+                        'C major'  | 'G major'  | 'D major'  | 'A major'   | 'E major'   | 'B major'   | 'F# major' | 'Db major' | 'Ab major' | 'Eb major' | 'Bb major'  | 'F major' |
+                        'A minor'  | 'E minor'  | 'B minor'  | 'F# minor'  | 'C# minor'  | 'G# minor'  | 'E minor'  | 'Bb minor' | 'F minor'  | 'C minor'  | 'G minor'   | 'D minor';
+export const tonalities: Tonality[] = [
+                        'C major'  , 'G major'  , 'D major'  , 'A major'   , 'E major'   , 'B major'   , 'F# major' , 'Db major' , 'Ab major' , 'Eb major' , 'Bb major'  , 'F major' ,
+                        'A minor'  , 'E minor'  , 'B minor'  , 'F# minor'  , 'C# minor'  , 'G# minor'  , 'E minor'  , 'Bb minor' , 'F minor'  , 'C minor'  , 'G minor'   , 'D minor'
+];
+
+
+export function isInKey(frequency: number, key: Tonality): boolean {
+    if (key === null) return true;
+
+    // const sharps = key.includes('major');
+    const scale = Scale.get(key);
+    const sharps = scale.notes.join(' ').includes('#');
+    
+    const midiNr = Midi.freqToMidi(frequency);
+    const midiName = Midi.midiToNoteName(midiNr, {sharps});
+    const noteName = midiName.replace(/\d+$/, "");
+    
+    return scale.notes.includes(noteName);
+}

@@ -1,8 +1,13 @@
 # TODOS
 
-1. Tutorial
+1. Tonality selection
+   1. Create modal to select tonality
+      1. Scroll
+   2. Make key touch sensitive to key size
+      1. Make more precise - not just radius from center
+2. Tutorial
    1. Several slides of graphics
-2. Ads
+3. Ads
    1. https://www.google.com/adsense/signup/new/lead?gsessionid=uxpeelM8BpKF43M0T1CYRTqnFejkFP-peAKHNHRAl2I
 
 

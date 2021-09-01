@@ -6,7 +6,7 @@ import * as convert from 'color-convert';
 import { Observable } from 'rxjs';
 
 import { Board } from '../hexaphone/Board';
-import { getNoteName, getNthToneFromFrequency, KeyLabels } from '../hexaphone/helpers/music';
+import { getNoteName, getNthToneFromFrequency, KeyLabels, Tonality } from '../hexaphone/helpers/music';
 import { Synthesizer, Timbre } from '../hexaphone/Synthesizer';
 
 Renderer.registerPlugin('batch', BatchRenderer);
@@ -83,12 +83,14 @@ export class BoardService {
     dragListener: (evt: any) => void;
     /* @ts-ignore */
     private tickerListener: (deltaT: number) => void;
-
+    /** @ts-ignore */
+    private tonality: Tonality;
 
     public initBoard(
         canvas: HTMLCanvasElement, width: number, height: number, labels: KeyLabels = 'major',
         fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number = defaultFillColor,
-        lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number = defaultLineColor
+        lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number = defaultLineColor,
+        tonality: Tonality = null
     ): void {
         if (this.app || this.board) {
             console.error("App has already been created!");
@@ -186,14 +188,19 @@ export class BoardService {
         return this.synth.setTimbre(timbre);
     }
 
-    public getLabels(): KeyLabels {
-        return this.labels;
-    }
+    public getTonality(): Tonality {
+        return this.tonality;
+    };
 
-    public setLabels(labels: KeyLabels) {
-        this.labels = labels;
-        const keyFunction = this.createKeyFunction(labels);
-        this.board.buildKeys(this.width, this.height, keyFunction, this.fillColor, this.lineColor);
+    setTonality(tonality: Tonality) {
+        this.tonality = tonality;
+        if (tonality?.includes('major')) {  // @TODO: there are major keys that use b's !
+            this.labels = 'major';
+        } else {
+            this.labels = 'minor';
+        }
+        const keyFunction = this.createKeyFunction(this.labels);
+        this.board.buildKeys(this.width, this.height, keyFunction, this.fillColor, this.lineColor, tonality);
     }
 
     private createKeyFunction(labels: KeyLabels) {

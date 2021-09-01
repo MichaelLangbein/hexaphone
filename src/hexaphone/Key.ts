@@ -3,12 +3,13 @@ import { Renderable } from "./Interfaces";
 import { AdvancedBloomFilter } from '@pixi/filter-advanced-bloom';
 import { Synthesizer } from './Synthesizer';
 import { Container, Sprite, Texture } from 'pixi.js';
+import { delay } from 'rxjs/operators';
 
 
 const baseTexture = Texture.from('assets/sprites/hexagon.png');
 
 export class Key implements Renderable {
-    private hexagon: Container;
+    private hexagon: Sprite;
     private text: Text;
     private frequency: number;
     private synth: Synthesizer;
@@ -64,10 +65,20 @@ export class Key implements Renderable {
         }
     }
 
-    touched(force = 1.0, preventRetouch = false): void {
+    touched(force = 1.0, x: number, y: number, preventRetouch = false): void {
         if (preventRetouch) {
             if (this.glowing > 0) return;
         }
+
+        const deltaX = x - this.hexagon.x;
+        const deltaY = y - this.hexagon.y;
+        const distance = Math.sqrt(
+            deltaX * deltaX + deltaY * deltaY
+        );
+        if (distance > this.hexagon.scale.x * this.hexagon.texture.height / 2) {
+            return;
+        }
+
         this.synth.play(this.frequency, force);
     
         this.glowing = 0.5;
