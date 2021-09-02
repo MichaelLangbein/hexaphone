@@ -3,7 +3,6 @@
 1. Tonality selection
    1. Create modal to select tonality
       1. Scroll
-   2. Label based on tonality: there are major keys that use b's!
 2. Tutorial
    1. Several slides of graphics
 3. Ads

@@ -1,16 +1,14 @@
 import { Application } from '@pixi/app';
 import { Renderer } from '@pixi/core';
 import { BatchRenderer } from '@pixi/core';
-import { TickerPlugin } from '@pixi/ticker';
 import * as convert from 'color-convert';
 import { Observable } from 'rxjs';
 
 import { Board } from '../hexaphone/Board';
-import { getNoteName, getNthToneFromFrequency, KeyLabels, Tonality } from '../hexaphone/helpers/music';
+import { getNthToneFromFrequency, Tonality } from '../hexaphone/helpers/music';
 import { Synthesizer, Timbre } from '../hexaphone/Synthesizer';
 
 Renderer.registerPlugin('batch', BatchRenderer);
-// Application.registerPlugin(TickerPlugin);
 
 
 

@@ -90,7 +90,7 @@ export class Board implements Renderable {
         }
 
         const [keysPerRow, rows, scale] = getKeyboardLayout(width, height);
-        const keys = createKeys(keysPerRow, rows, scale, this.synth, fillColor, lineColor, tonality);
+        const keys = createKeys(keysPerRow, rows, scale, this.synth, fillColor, lineColor, tonality || null);
         this.keys = keys;
 
         for (const key of Object.values(keys)) {

@@ -1,5 +1,5 @@
 import { hexCoordsToXyCoords } from "./hexIndex";
-import { getFrequencyNthTone, getNoteName, isInKey, KeyLabels, Tonality } from "./music";
+import { getFrequencyNthTone, getNoteName, isInKey, Tonality } from "./music";
 import { Key } from "../Key";
 import { Synthesizer } from "../Synthesizer";
 
@@ -10,12 +10,11 @@ export function createKeys(
     synth: Synthesizer,
     fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
     lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
-    tonality?: Tonality) 
+    tonality: Tonality | null) 
 : {[index: string]: Key} {
 
     const keys: {[index: string]: Key} = {};
 
-    const labels: KeyLabels = tonality?.includes('minor') ? 'minor' : 'major'; // @TODO: Label based on tonality: there are major keys that use b's!
     const betaMin = Math.round(-nrRows / 2);
     const betaMax = Math.round(nrRows / 2);
     for (let beta = betaMin; beta < betaMax; beta++) {
@@ -32,7 +31,7 @@ export function createKeys(
             if (tonality && !isInKey(frequency, tonality)) {
                 scaleFactor = 0.7;
             }
-            const label = getNoteName(frequency, labels);
+            const label = getNoteName(frequency, tonality);
             const key = new Key(synth, fc, lc, xPos, yPos, scale * scaleFactor, scale * 0.0125, frequency, label);
             keys[index] = key;
         }
