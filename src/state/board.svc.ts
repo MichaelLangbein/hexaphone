@@ -70,8 +70,6 @@ export class BoardService {
     /* @ts-ignore */
     private synth: Synthesizer;
     /* @ts-ignore */
-    private labels: KeyLabels;
-    /* @ts-ignore */
     private fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number;
     /* @ts-ignore */
     private lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number;
@@ -87,7 +85,7 @@ export class BoardService {
     private tonality: Tonality;
 
     public initBoard(
-        canvas: HTMLCanvasElement, width: number, height: number, labels: KeyLabels = 'major',
+        canvas: HTMLCanvasElement, width: number, height: number,
         fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number = defaultFillColor,
         lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number = defaultLineColor,
         tonality: Tonality = null
@@ -108,9 +106,7 @@ export class BoardService {
 
         const synth = new Synthesizer();
 
-        const keyFunction = this.createKeyFunction(labels);
-
-        const board = new Board(synth, width, height, keyFunction, fillColor, lineColor);
+        const board = new Board(synth, width, height, fillColor, lineColor);
         app.stage.addChild(board.getDisplayObject());
 
         // on desktop
@@ -150,7 +146,6 @@ export class BoardService {
         this.app = app;
         this.board = board;
         this.synth = synth;
-        this.labels = labels;
         this.fillColor = fillColor;
         this.lineColor = lineColor;
         this.clickListener = clickListener;
@@ -172,8 +167,7 @@ export class BoardService {
         this.width = width;
         this.height = height;
         this.app.renderer.resize(this.width, this.height);
-        const keyFunction = this.createKeyFunction(this.labels);
-        this.board.buildKeys(this.width, this.height, keyFunction, this.fillColor, this.lineColor);
+        this.board.buildKeys(this.width, this.height, this.fillColor, this.lineColor, this.tonality);
     }
 
     public loadSamplerData(timbre: Timbre): Observable<boolean> {
@@ -194,22 +188,9 @@ export class BoardService {
 
     setTonality(tonality: Tonality) {
         this.tonality = tonality;
-        if (tonality?.includes('major')) {  // @TODO: there are major keys that use b's !
-            this.labels = 'major';
-        } else {
-            this.labels = 'minor';
-        }
-        const keyFunction = this.createKeyFunction(this.labels);
-        this.board.buildKeys(this.width, this.height, keyFunction, this.fillColor, this.lineColor, tonality);
+        this.board.buildKeys(this.width, this.height, this.fillColor, this.lineColor, tonality);
     }
 
-    private createKeyFunction(labels: KeyLabels) {
-        if (labels === 'number') {
-            return defaultLabelFunction;
-        } else {
-            return (freqency: number) => getNoteName(freqency, labels);
-        }
-    }
 
 }
 

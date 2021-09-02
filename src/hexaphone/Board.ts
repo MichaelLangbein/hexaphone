@@ -20,12 +20,11 @@ export class Board implements Renderable {
 
     constructor(
         private synth: Synthesizer, width: number, height: number,
-        labelFunction: (frequency: number, alpha: number, beta: number, gamma: number) => string,
         fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
         lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
     ) {
         this.container = new Container();
-        this.buildKeys(width, height, labelFunction, fillColor, lineColor);
+        this.buildKeys(width, height, fillColor, lineColor);
     }
 
     click(evt: MouseEvent, preventReclick = false): void {
@@ -82,7 +81,6 @@ export class Board implements Renderable {
 
     buildKeys(
         width: number, height: number,
-        labelFunction: (frequency: number, alpha: number, beta: number, gamma: number) => string,
         fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
         lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
         tonality?: Tonality
@@ -92,7 +90,7 @@ export class Board implements Renderable {
         }
 
         const [keysPerRow, rows, scale] = getKeyboardLayout(width, height);
-        const keys = createKeys(keysPerRow, rows, scale, this.synth, labelFunction, fillColor, lineColor, tonality);
+        const keys = createKeys(keysPerRow, rows, scale, this.synth, fillColor, lineColor, tonality);
         this.keys = keys;
 
         for (const key of Object.values(keys)) {
