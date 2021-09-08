@@ -27,8 +27,9 @@ export class Board implements Renderable {
         this.buildKeys(width, height, fillColor, lineColor);
     }
 
-    click(evt: MouseEvent, preventReclick = false): void {
+    click(evt: MouseEvent, preventReclick = false): number[] {
         // note: this needs to be changed if there are other ui-elements, like headers, menus etc
+        const frequencies: number[] = [];
         const x = evt.x - this.getDisplayObject().x;
         const y = evt.y - this.getDisplayObject().y;
 
@@ -37,18 +38,21 @@ export class Board implements Renderable {
         for (const candidateHexIndex in this.keys) {
             if (candidateHexIndex === hexIndex) {
                 const key = this.keys[candidateHexIndex];
-                key.touched(1.0, x, y, preventReclick);
+                const freq = key.touched(1.0, x, y, preventReclick);
+                if (freq) frequencies.push(freq);
             }
         }
+        return frequencies;
     }
 
-    touch(touch: Touch, preventRetouch = false): void {
+    touch(touch: Touch, preventRetouch = false): number[] {
         /**
          * touch.force: [0 .. 1], 0 if device does not support pressure
          * touch.radiusX: [css-pixels, same scale as touch.screenX]
          */
 
         // @TODO: this needs to be changed if there are other ui-elements, like headers, menus etc
+        const frequencies: number[] = [];
         const x = touch.clientX - this.getDisplayObject().x;
         const y = touch.clientY - this.getDisplayObject().y;
         const rX = touch.radiusX > 0 ? touch.radiusX : 10;
@@ -58,15 +62,18 @@ export class Board implements Renderable {
             for (const hexCoordsCandidate in this.keys) {
                 if (hexCoordsCandidate === hexCoords) {
                     const key = this.keys[hexCoordsCandidate];
+                    let freq = null;
                     if (touch.force > 0) {
-                        key.touched(touch.force, x, y, preventRetouch);
+                        freq = key.touched(touch.force, x, y, preventRetouch);
                     } else {
-                        key.touched(1.0, x, y, preventRetouch);
+                        freq = key.touched(1.0, x, y, preventRetouch);
                     }
+                    if (freq) frequencies.push(freq);
                     break;
                 }
             }
         }
+        return frequencies;
     }
 
     getDisplayObject(): Container {

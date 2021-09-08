@@ -65,7 +65,7 @@ export class Key implements Renderable {
         }
     }
 
-    touched(force = 1.0, x: number, y: number, preventRetouch = false): void {
+    touched(force = 1.0, x: number, y: number, preventRetouch = false): number | void  {
         if (preventRetouch) {
             if (this.glowing > 0) return;
         }
@@ -97,5 +97,7 @@ export class Key implements Renderable {
             brightness: 5,
             quality: 10,
         })];
+
+        return this.frequency;
     }
 }

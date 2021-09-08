@@ -11,7 +11,8 @@ export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed
             step: 0
         };
 
-        // const touches$ = this.props.boardSvc.listenToTouches();
+        const touches$ = this.props.boardSvc.listenToTouches();
+        touches$.subscribe((vals) => console.log(vals));
     }
 
 

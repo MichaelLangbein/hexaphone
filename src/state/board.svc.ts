@@ -2,7 +2,7 @@ import { Application } from '@pixi/app';
 import { Renderer } from '@pixi/core';
 import { BatchRenderer } from '@pixi/core';
 import * as convert from 'color-convert';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Board } from '../hexaphone/Board';
 import { getNthToneFromFrequency, Tonality } from '../hexaphone/helpers/music';
@@ -52,7 +52,19 @@ export const defaultLineColor = (frequency: number, x: number, y: number, alpha:
     return parseInt(hex2.replace(/^#/, ''), 16);
 };
 
-
+/**
+ * ** BOARD SERVICE **
+ * 
+ * Our app's interface to the `Board` class.
+ * 
+ * This service's task is to
+ *  - set the state for `Board`
+ *  - expose an API with which the app may alter the `Board`'s state
+ *  - connect app- and browser-events with the `Board`
+ *  - connect board-events with the app (as observables)
+ * 
+ * The actual board-logic is implemented in the `Board` class.
+ */
 export class BoardService {
 
     /* @ts-ignore */
@@ -81,6 +93,7 @@ export class BoardService {
     private tickerListener: (deltaT: number) => void;
     /** @ts-ignore */
     private tonality: Tonality;
+    private touches$ = new BehaviorSubject<number[]>([]);
 
     public initBoard(
         canvas: HTMLCanvasElement, width: number, height: number,
@@ -109,25 +122,32 @@ export class BoardService {
 
         // on desktop
         const clickListener = (evt: any) => {
-            board.click(evt);
+            const frequencies = board.click(evt);
+            this.touches$.next(frequencies);
         };
         canvas.addEventListener('click', clickListener);
 
         // on mobile
         const touchListener = (evt: any) => {
+            const frequencies: number[] = [];
             for (let i = 0; i < evt.touches.length; i++) {
                 const touch = evt.touches[i];
-                board.touch(touch);
+                const tFreqs = board.touch(touch);
+                frequencies.push(...tFreqs);
             }
+            this.touches$.next(frequencies);
             evt.preventDefault();
         };
         canvas.addEventListener('touchstart', touchListener);
 
         const dragListener = (evt: any) => {
+            const frequencies: number[] = [];
             for (let i = 0; i < evt.touches.length; i++) {
                 const touch = evt.touches[i];
-                board.touch(touch, true);
+                const tFreqs = board.touch(touch, true);
+                frequencies.push(...tFreqs);
             }
+            this.touches$.next(frequencies);
             evt.preventDefault();
         };
         canvas.addEventListener('touchmove', dragListener);
@@ -184,12 +204,14 @@ export class BoardService {
         return this.tonality;
     };
 
-    setTonality(tonality: Tonality) {
+    public setTonality(tonality: Tonality) {
         this.tonality = tonality;
         this.board.buildKeys(this.width, this.height, this.fillColor, this.lineColor, tonality);
     }
 
-
+    public listenToTouches(): Observable<number[]> {
+        return this.touches$;
+    }
 }
 
 
