@@ -18,5 +18,5 @@ Later
       2. Findings with spectorjs:
          1. pixi has to redraw the whole board with every animation-frame
          2. something - probably the glow-shader, or the board-graphics-drawing process - causes a lot of jumping between the non-canvas framebuffers 1 and 2. Keeps jumping between texture 56 and 57 and buffer 5 and 4, drawing and clearing again.
-      3. Adding a **FilterArea** while ticker-plugin on causes error (ticker alraedy defined)
+      3. Adding a **FilterArea** while ticker-plugin on causes error (ticker already defined)
       4. Somehow grouping keys so that they don't need to be redrawn when not changed?

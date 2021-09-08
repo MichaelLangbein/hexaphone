@@ -1,7 +1,7 @@
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonHeader, IonModal, IonToast } from '@ionic/react';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonModal, IonToast } from '@ionic/react';
 import React from 'react';
 import { Observable } from 'rxjs';
-import { delay, filter, share, tap } from 'rxjs/operators';
+import { delay, filter } from 'rxjs/operators';
 import { BoardService } from '../state/board.svc';
 
 
@@ -26,9 +26,8 @@ export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed
                     <IonCard>
                         <IonCardHeader>Tutorial</IonCardHeader>
                         <IonCardContent>
-                            <p  >Welcome to Hexaphone!</p>
                             <h2 >What is hexaphone?</h2>
-                            <p  >Hexaphone is a musical instrument. It's keyboard has keys arranged in a pattern such that notes which sound harmonically together are also located close to each other. By the same logic hitting keys that are disharmonic is hard.</p>
+                            <p  >Hexaphone is a musical instrument. Its keyboard has keys arranged in a pattern such that notes which sound harmonically together are also located close to each other. By the same logic hitting keys that are disharmonic is hard.</p>
                             <h2 >Try it out! Click on 'next' and hit any key.</h2>
                         </IonCardContent>
                     </IonCard>
@@ -41,7 +40,6 @@ export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed
                     onDidPresent={
                         () => this.touches$.pipe(
                             filter((freqs) => !!freqs.length),
-                            tap((freqs) => console.log(freqs)),
                             delay(700))
                         .subscribe((freqs) => {
                             this.setState({ step: 2 });
