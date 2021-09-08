@@ -140,6 +140,7 @@ export class BoardService {
         };
         canvas.addEventListener('touchstart', touchListener);
 
+        // on mobile
         const dragListener = (evt: any) => {
             const frequencies: number[] = [];
             for (let i = 0; i < evt.touches.length; i++) {

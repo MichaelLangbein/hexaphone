@@ -1,7 +1,9 @@
 # TODOS
 
 1. Tutorial
-   1. Several slides of graphics
+   1. waiting for touch: goes too fast every **2nd** time
+      1. reason: old subscription still active?
+   2. graphics
 2. Ads
    1. https://www.google.com/adsense/signup/new/lead?gsessionid=uxpeelM8BpKF43M0T1CYRTqnFejkFP-peAKHNHRAl2I
 
@@ -10,8 +12,7 @@ Later
    1. Rotation / Scaling
       1. Board currently sized relative to window.innerHeight. Make that relative to ComponentHeight
          1. https://stackoverflow.com/questions/49058890/how-to-get-a-react-components-size-height-width-before-render
-   2. Highlight keys per chosen tonality
-   3. Performance
+   2. Performance
       1. We're already...
          1. using sprites instead of graphics
          2. caching text as Bitmap

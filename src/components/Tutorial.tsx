@@ -1,9 +1,13 @@
-import { IonButton, IonHeader, IonModal, IonToast } from '@ionic/react';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonHeader, IonModal, IonToast } from '@ionic/react';
 import React from 'react';
+import { Observable } from 'rxjs';
+import { delay, filter, tap } from 'rxjs/operators';
 import { BoardService } from '../state/board.svc';
 
 
 export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed: () => void }, { step: number }> {
+
+    private touches$: Observable<number[]>;
 
     constructor(props: any) {
         super(props);
@@ -11,8 +15,7 @@ export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed
             step: 0
         };
 
-        const touches$ = this.props.boardSvc.listenToTouches();
-        touches$.subscribe((vals) => console.log(vals));
+        this.touches$ = this.props.boardSvc.listenToTouches();
     }
 
 
@@ -20,14 +23,31 @@ export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed
         return (
             <div>
                 <IonModal isOpen={this.state.step === 0}>
-                    <IonHeader>Welcome to Hexaphone</IonHeader>
+                    <IonCard>
+                        <IonCardHeader>Tutorial</IonCardHeader>
+                        <IonCardContent>
+                            <p  >Welcome to Hexaphone!</p>
+                            <h2 >What is hexaphone?</h2>
+                            <p  >Hexaphone is a musical instrument. It's keyboard has keys arranged in a pattern such that notes which sound harmonically together are also located close to each other. By the same logic hitting keys that are disharmonic is hard.</p>
+                            <h2 >Try it out! Click on 'next' and hit any key.</h2>
+                        </IonCardContent>
+                    </IonCard>
                     <IonButton onClick={(evt) => this.setState({ step: 1 }) }>next</IonButton>
                 </IonModal>
 
                 <IonToast
                     isOpen={ this.state.step === 1 }
                     onDidDismiss={() => this.props.onClosed() }
-                    message="Press a key"
+                    onDidPresent={
+                        () => this.touches$.pipe(
+                            filter((freqs) => !!freqs.length),
+                            tap((freqs) => console.log(freqs)),
+                            delay(700))
+                        .subscribe((freqs) => {
+                            this.setState({ step: 2 });
+                        })
+                    }
+                    message="Touch any key"
                     position="top"
                     buttons={[
                         {
