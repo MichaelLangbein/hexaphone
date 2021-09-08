@@ -1,6 +1,6 @@
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonModal, IonToast } from '@ionic/react';
 import React from 'react';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { delay, filter } from 'rxjs/operators';
 import { BoardService } from '../state/board.svc';
 
@@ -8,6 +8,7 @@ import { BoardService } from '../state/board.svc';
 export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed: () => void }, { step: number }> {
 
     private touches$: Observable<number[]>;
+    private subscriptions: Subscription[] = [];
 
     constructor(props: any) {
         super(props);
@@ -18,6 +19,11 @@ export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed
         this.touches$ = this.props.boardSvc.listenToTouches();
     }
 
+    componentWillUnmount() {
+        for (const s of this.subscriptions) {
+            s.unsubscribe();
+        }
+    }
 
     render() {
         return (
@@ -38,12 +44,15 @@ export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed
                     isOpen={ this.state.step === 1 }
                     onDidDismiss={() => this.props.onClosed() }
                     onDidPresent={
-                        () => this.touches$.pipe(
-                            filter((freqs) => !!freqs.length),
-                            delay(700))
-                        .subscribe((freqs) => {
-                            this.setState({ step: 2 });
-                        })
+                        () => {
+                            const subscription = this.touches$.pipe(
+                                filter((frequencies) => !!frequencies.length),
+                                delay(700))
+                            .subscribe((freqs) => {
+                                this.setState({ step: 2 });
+                            });
+                            this.subscriptions.push(subscription);
+                        }
                     }
                     message="Touch any key"
                     position="top"

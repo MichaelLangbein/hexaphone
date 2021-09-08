@@ -1,4 +1,4 @@
-import { IonButton, IonModal, IonCard, IonCardHeader, IonCardContent, IonCardTitle, IonCardSubtitle, IonIcon, IonItem, IonLabel } from '@ionic/react';
+import { withIonLifeCycle } from '@ionic/react';
 import React from 'react';
 import { BoardService } from '../state/board.svc';
 
@@ -21,15 +21,18 @@ export class Board extends React.Component<{ boardSvc: BoardService }> {
         };
         window.addEventListener('orientationchange', () => doResize());  // mobile
         window.addEventListener('resize', () => doResize());  // browser
+
+        console.log('board constructed')
     }
 
     componentDidMount() {
+        console.log('board did mount')
         const doOnTimeOut = () => {
-            if (this.canvas.current) {
+            if (this.canvas.current && this.canvas.current.width) {
                 this.props.boardSvc.initBoard(
                     this.canvas.current, window.innerWidth, window.innerHeight,
                 );
-                console.log('board initialized')
+                console.log('board initialized with width ', this.canvas.current.width)
             } else {
                 setTimeout(doOnTimeOut, 100);
                 console.log('Waiting for board ...');
@@ -37,6 +40,31 @@ export class Board extends React.Component<{ boardSvc: BoardService }> {
         };
         setTimeout(doOnTimeOut, 100);
     }
+
+    // Fired when the component routing to is about to animate into view.
+    ionViewWillEnter() {
+        const w = this.canvas.current?.width;
+        console.log('ionViewWillEnter: canvas.with = ', w);
+    }
+
+    // Fired when the component routing to has finished animating.
+    ionViewDidEnter() {
+        const w = this.canvas.current?.width;
+        console.log('ionViewDidEnter: canvas.with = ', w);
+    }
+
+    // Fired when the component routing from is about to animate.
+    ionViewWillLeave() {
+        const w = this.canvas.current?.width;
+        console.log('ionViewWillLeave: canvas.with = ', w);
+    }
+
+    // Fired when the component routing to has finished animating.
+    ionViewDidLeave() {
+        const w = this.canvas.current?.width;
+        console.log('ionViewDidLeave: canvas.with = ', w);
+    }
+
 
     render() {
         return (
@@ -47,3 +75,6 @@ export class Board extends React.Component<{ boardSvc: BoardService }> {
         );
     }
 }
+
+
+export const InstrumentedBoard = withIonLifeCycle(Board);

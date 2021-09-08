@@ -5,7 +5,7 @@ import {
 import { arrowDownCircle, help, musicalNote, radioOutline, text } from 'ionicons/icons';
 import React from 'react';
 import { Ad } from './Ad';
-import { Board } from './Board';
+import { InstrumentedBoard as Board } from './Board';
 import { Welcome } from './Welcome';
 import { TimbreSelection } from './TimbreSelection';
 import { TonalitySelection } from './TonalitySelection';
