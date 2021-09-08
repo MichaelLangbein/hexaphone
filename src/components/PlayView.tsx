@@ -42,9 +42,15 @@ class PlayView extends React.Component<{}, PlayViewState> {
       <IonPage>
         <IonContent fullscreen>
 
-          <IonModal isOpen={this.state.showTutorialModal}>
-            <Tutorial></Tutorial>
-          </IonModal>
+
+          {this.state.showTutorialModal && 
+            <Tutorial boardSvc={boardSvc} onClosed={() => {
+              this.setState({
+                ...this.state,
+                showTutorialModal: false
+              });
+            }}></Tutorial>
+          }
 
           <IonModal isOpen={this.state.showTimbreModal}>
             <TimbreSelection boardSvc={boardSvc} onTimbreSelected={() => {
@@ -77,7 +83,7 @@ class PlayView extends React.Component<{}, PlayViewState> {
               <IonFabButton color="medium" onClick={() => this.setState((oldState, props) => ({ ...oldState, showTonalityModal: true }))}>
                 <IonIcon icon={musicalNote}></IonIcon>
               </IonFabButton>
-              <IonFabButton color="medium">
+              <IonFabButton color="medium"  onClick={() => this.setState((oldState, props) => ({ ...oldState, showTutorialModal: true }))}>
                 <IonIcon icon={help}></IonIcon>
               </IonFabButton>
             </IonFabList>

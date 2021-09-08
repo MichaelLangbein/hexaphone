@@ -1,5 +1,62 @@
+import { IonToast } from '@ionic/react';
+import React from 'react';
+import { BoardService } from '../state/board.svc';
 
 
-export const Tutorial: React.FC = () => (
-    <div>Tutorial works</div>
-)
+export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed: () => void }, { step: number }> {
+
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            step: 0
+        };
+
+        // const touches$ = this.props.boardSvc.listenToTouches();
+    }
+
+
+    render() {
+        return (
+            <div>
+                <IonToast
+                    isOpen={this.state.step === 0}
+                    onDidDismiss={() => this.props.onClosed() }
+                    message="Press a key"
+                    position="top"
+                    buttons={[
+                        {
+                            text: 'next',
+                            role: 'next',
+                            handler: () => {
+                                this.setState({ step: 1 })
+                            }
+                        }
+                    ]}
+                />
+
+                <IonToast
+                    isOpen={this.state.step === 1}
+                    onDidDismiss={() => this.props.onClosed() }
+                    message="Press another key"
+                    position="top"
+                    buttons={[
+                        {
+                            side: 'start',
+                            text: 'back',
+                            handler: () => {
+                                this.setState({ step: 0 })
+                            }
+                        },
+                        {
+                            text: 'next',
+                            role: 'next',
+                            handler: () => {
+                                this.props.onClosed()
+                            }
+                        }
+                    ]}
+                />
+            </div>
+        );
+    }
+}

@@ -1,4 +1,4 @@
-import { IonButton, IonModal } from '@ionic/react';
+import { IonButton, IonModal, IonCard, IonCardHeader, IonCardContent, IonCardTitle, IonCardSubtitle, IonIcon, IonItem, IonLabel } from '@ionic/react';
 import React from 'react';
 import { BoardService } from '../state/board.svc';
 
@@ -19,14 +19,14 @@ export class Board extends React.Component<{ boardSvc: BoardService }, { showSta
         const doResize = () => {
             if (this.canvas.current) {
                 this.props.boardSvc.setBoardSize(window.innerWidth, window.innerHeight);
+                this.props.boardSvc.initSynth();
             }
         };
-        window.addEventListener('orientationchange', () => doResize() );  // mobile
-        window.addEventListener('resize', () => doResize() );  // browser
+        window.addEventListener('orientationchange', () => doResize());  // mobile
+        window.addEventListener('resize', () => doResize());  // browser
     }
 
     private go() {
-        this.props.boardSvc.initSynth();
         this.setState({
             showStartModal: false
         });
@@ -51,7 +51,30 @@ export class Board extends React.Component<{ boardSvc: BoardService }, { showSta
         return (
             <div style={{ width: '100%', height: '100%' }}>
                 <IonModal isOpen={this.state.showStartModal}>
-                    <IonButton color={'primary'} onClick={(evt) => this.go()}>Go!</IonButton>
+                    <IonCard>
+                        <IonCardHeader>
+                            <IonCardTitle>Welcome to Hexaphone!</IonCardTitle>
+                            <IonCardSubtitle>The ergonomic keyboard</IonCardSubtitle>
+                        </IonCardHeader>
+                        <IonCardContent>
+                            <img alt="hexaphone logo" src="./assets/sprites/hexagonAndKey.svg" style={{
+                                height: "30%",
+                                display: "block",
+                                marginLeft: "auto",
+                                marginRight: "auto",
+                            }} />
+                            <IonItem>
+                                <IonLabel color={'primary'} onClick={(evt) => console.error("@TODO: redirect from here to tutorial")}>
+                                    Tutorial
+                                </IonLabel>
+                            </IonItem>
+                            <IonItem>
+                                <IonLabel color={'primary'} onClick={(evt) => this.go()}>
+                                    Play!
+                                </IonLabel>
+                            </IonItem>
+                        </IonCardContent>
+                    </IonCard>
                 </IonModal>
                 <canvas ref={this.canvas}></canvas>
             </div>
