@@ -2,7 +2,7 @@ import { Application } from '@pixi/app';
 import { Renderer } from '@pixi/core';
 import { BatchRenderer } from '@pixi/core';
 import * as convert from 'color-convert';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { Board } from '../hexaphone/Board';
 import { getNthToneFromFrequency, Tonality } from '../hexaphone/helpers/music';
@@ -93,7 +93,7 @@ export class BoardService {
     private tickerListener: (deltaT: number) => void;
     /** @ts-ignore */
     private tonality: Tonality;
-    private touches$ = new BehaviorSubject<number[]>([]);
+    private touches$ = new Subject<number[]>();
 
     public initBoard(
         canvas: HTMLCanvasElement, width: number, height: number,

@@ -1,7 +1,7 @@
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonHeader, IonModal, IonToast } from '@ionic/react';
 import React from 'react';
 import { Observable } from 'rxjs';
-import { delay, filter, tap } from 'rxjs/operators';
+import { delay, filter, share, tap } from 'rxjs/operators';
 import { BoardService } from '../state/board.svc';
 
 

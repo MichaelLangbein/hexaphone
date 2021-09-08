@@ -1,9 +1,7 @@
 # TODOS
 
 1. Tutorial
-   1. waiting for touch: goes too fast every **2nd** time
-      1. reason: old subscription still active?
-   2. graphics
+   1. graphics
 2. Ads
    1. https://www.google.com/adsense/signup/new/lead?gsessionid=uxpeelM8BpKF43M0T1CYRTqnFejkFP-peAKHNHRAl2I
 
