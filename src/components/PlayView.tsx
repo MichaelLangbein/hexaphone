@@ -6,6 +6,7 @@ import { arrowDownCircle, help, musicalNote, radioOutline, text } from 'ionicons
 import React from 'react';
 import { Ad } from './Ad';
 import { Board } from './Board';
+import { Welcome } from './Welcome';
 import { TimbreSelection } from './TimbreSelection';
 import { TonalitySelection } from './TonalitySelection';
 import { Tutorial } from './Tutorial';
@@ -13,10 +14,10 @@ import { BoardService } from '../state/board.svc';
 
 
 interface PlayViewState {
+  showWelcomeModal: boolean;
   showTutorialModal: boolean;
   showTimbreModal: boolean;
   showTonalityModal: boolean
-  showStartModal: boolean;
 }
 
 const boardSvc = new BoardService();
@@ -28,9 +29,9 @@ class PlayView extends React.Component<{}, PlayViewState> {
   constructor(props: any) {
     super(props);
     this.state = {
+      showWelcomeModal: true,
       showTutorialModal: false,
       showTimbreModal: false,
-      showStartModal: false,
       showTonalityModal: false
     }
     this.boardContainer = React.createRef<HTMLDivElement>();
@@ -41,6 +42,20 @@ class PlayView extends React.Component<{}, PlayViewState> {
     return (
       <IonPage>
         <IonContent fullscreen>
+
+          <IonModal isOpen={this.state.showWelcomeModal}>
+            <Welcome
+              onPlayClicked={ () => this.setState({
+                ...this.state,
+                showWelcomeModal: false
+              }) }
+              onTutorialClicked={ () => this.setState({
+                ...this.state,
+                showWelcomeModal: false,
+                showTutorialModal: true
+              }) }
+            ></Welcome>
+          </IonModal>
 
 
           {this.state.showTutorialModal && 
