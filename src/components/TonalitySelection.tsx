@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { IonItem, IonLabel, IonList, IonListHeader, IonRadioGroup, IonRadio } from '@ionic/react';
+import { IonItem, IonLabel, IonList, IonListHeader, IonRadioGroup, IonRadio, IonContent } from '@ionic/react';
 import { BoardService } from '../state/board.svc';
 import { tonalities, Tonality } from '../hexaphone/helpers/music';
 
@@ -26,33 +26,36 @@ export class TonalitySelection extends React.Component<{ boardSvc: BoardService,
 
     render() {
         return (
-            <IonList className="scroll-content">
-                <IonListHeader>
-                    <IonLabel>
-                        Tonality
-                    </IonLabel>
-                </IonListHeader>
+            <IonContent>
+                <IonList>
 
-                <IonRadioGroup value={this.getTonality()}>
-
-                    <IonItem key={-1} onClick={() => this.setTonality(null)}>
+                    <IonListHeader>
                         <IonLabel>
-                            None
+                            Tonality
                         </IonLabel>
-                        <IonRadio slot="start" value={null} />
-                    </IonItem>
+                    </IonListHeader>
 
-                    {tonalities.map((t, i) =>
-                        <IonItem key={i} onClick={() => this.setTonality(t)}>
+                    <IonRadioGroup value={this.getTonality()}>
+
+                        <IonItem key={-1} onClick={() => this.setTonality(null)}>
                             <IonLabel>
-                                {t}
+                                None
                             </IonLabel>
-                            <IonRadio slot="start" value={t} />
+                            <IonRadio slot="start" value={null} />
                         </IonItem>
-                    )}
 
-                </IonRadioGroup>
-            </IonList>
+                        {tonalities.map((t, i) =>
+                            <IonItem key={i} onClick={() => this.setTonality(t)}>
+                                <IonLabel>
+                                    {t}
+                                </IonLabel>
+                                <IonRadio slot="start" value={t} />
+                            </IonItem>
+                        )}
+
+                    </IonRadioGroup>
+                </IonList>
+            </IonContent>
         )
     }
 

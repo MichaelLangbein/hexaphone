@@ -1,4 +1,4 @@
-import { IonItem, IonLabel, IonList, IonListHeader, IonRadio, IonRadioGroup, IonSpinner } from '@ionic/react';
+import { IonContent, IonItem, IonLabel, IonList, IonListHeader, IonRadio, IonRadioGroup, IonSpinner } from '@ionic/react';
 import React from 'react';
 import { tap } from 'rxjs/operators';
 import { Timbre } from '../hexaphone/Synthesizer';
@@ -38,56 +38,58 @@ export class TimbreSelection extends React.Component<{ boardSvc: BoardService, o
 
     render() {
         return (
-            <IonList>
-                <IonListHeader>
-                    <IonLabel>
-                        Timbre
-                </IonLabel>
-                </IonListHeader>
-
-                <IonRadioGroup value={this.getTimbre()}>
-
-                    <IonItem onClick={() => this.setTimbre('basic')}>
+            <IonContent>
+                <IonList>
+                    <IonListHeader>
                         <IonLabel>
-                            Default
+                            Timbre
                         </IonLabel>
-                        <IonRadio slot="start" value={'basic'} />
-                    </IonItem>
+                    </IonListHeader>
 
-                    <IonItem onClick={() => this.setTimbre('piano')}>
-                        <IonLabel>
-                            Piano
-                        </IonLabel>
-                        {this.state.loading && this.state.timbre === 'piano' && <IonSpinner name="crescent" />}
-                        <IonRadio slot="start" value={'piano'} />
-                    </IonItem>
+                    <IonRadioGroup value={this.getTimbre()}>
 
-                    <IonItem onClick={() => this.setTimbre('saxophone')}>
-                        <IonLabel>
-                            Saxophone
-                        </IonLabel>
-                        {this.state.loading && this.state.timbre === 'saxophone' && <IonSpinner name="crescent" />}
-                        <IonRadio slot="start" value={'saxophone'} />
-                    </IonItem>
+                        <IonItem onClick={() => this.setTimbre('basic')}>
+                            <IonLabel>
+                                Default
+                            </IonLabel>
+                            <IonRadio slot="start" value={'basic'} />
+                        </IonItem>
 
-                    <IonItem onClick={() => this.setTimbre('harp')}>
-                        <IonLabel>
-                            Harp
-                        </IonLabel>
-                        {this.state.loading && this.state.timbre === 'harp' && <IonSpinner name="crescent" />}
-                        <IonRadio slot="start" value={'harp'} />
-                    </IonItem>
+                        <IonItem onClick={() => this.setTimbre('piano')}>
+                            <IonLabel>
+                                Piano
+                            </IonLabel>
+                            {this.state.loading && this.state.timbre === 'piano' && <IonSpinner name="crescent" />}
+                            <IonRadio slot="start" value={'piano'} />
+                        </IonItem>
 
-                    <IonItem onClick={() => this.setTimbre('violin')}>
-                        <IonLabel>
-                            Violin
-                        </IonLabel>
-                        {this.state.loading && this.state.timbre === 'violin' && <IonSpinner name="crescent" />}
-                        <IonRadio slot="start" value={'violin'} />
-                    </IonItem>
+                        <IonItem onClick={() => this.setTimbre('saxophone')}>
+                            <IonLabel>
+                                Saxophone
+                            </IonLabel>
+                            {this.state.loading && this.state.timbre === 'saxophone' && <IonSpinner name="crescent" />}
+                            <IonRadio slot="start" value={'saxophone'} />
+                        </IonItem>
 
-                </IonRadioGroup>
-            </IonList>
+                        <IonItem onClick={() => this.setTimbre('harp')}>
+                            <IonLabel>
+                                Harp
+                            </IonLabel>
+                            {this.state.loading && this.state.timbre === 'harp' && <IonSpinner name="crescent" />}
+                            <IonRadio slot="start" value={'harp'} />
+                        </IonItem>
+
+                        <IonItem onClick={() => this.setTimbre('violin')}>
+                            <IonLabel>
+                                Violin
+                            </IonLabel>
+                            {this.state.loading && this.state.timbre === 'violin' && <IonSpinner name="crescent" />}
+                            <IonRadio slot="start" value={'violin'} />
+                        </IonItem>
+
+                    </IonRadioGroup>
+                </IonList>
+            </IonContent>
         );
     }
 }
