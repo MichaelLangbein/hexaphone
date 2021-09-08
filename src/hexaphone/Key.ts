@@ -25,7 +25,7 @@ export class Key implements Renderable {
         this.synth = synth;
         this.frequency = frequency;
 
-        const fontSize = 24;
+        const fontSize = 48;
         
         const hexagon: Sprite = new Sprite(baseTexture);
         const baseSize = hexagon.texture.height / 2;
@@ -70,12 +70,21 @@ export class Key implements Renderable {
             if (this.glowing > 0) return;
         }
 
+        const tolerance = 1.1;
         const deltaX = x - this.hexagon.x;
         const deltaY = y - this.hexagon.y;
-        const distance = Math.sqrt(
-            deltaX * deltaX + deltaY * deltaY
-        );
-        if (distance > this.hexagon.scale.x * this.hexagon.texture.height / 2) {
+        // if point is off horizontally ...
+        if (Math.abs(deltaX) > tolerance * this.hexagon.scale.x * this.hexagon.texture.width / 2) {
+            return;
+        }
+        // if point is off vertically ...
+        if (Math.abs(deltaY) > tolerance * this.hexagon.scale.y * this.hexagon.texture.height / 2) {
+            return;
+        }
+        // if point is off diagonally ...
+        const h = this.hexagon.scale.y * this.hexagon.texture.height / 2;
+        const Y = h - deltaX / Math.sqrt(3);
+        if (deltaY > tolerance * Y) {
             return;
         }
 

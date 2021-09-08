@@ -1,11 +1,12 @@
 # TODOS
 
-1. Tonality selection
+1. Better hit-detection
+2. Tonality selection
    1. Create modal to select tonality
       1. Scroll
-2. Tutorial
+3. Tutorial
    1. Several slides of graphics
-3. Ads
+4. Ads
    1. https://www.google.com/adsense/signup/new/lead?gsessionid=uxpeelM8BpKF43M0T1CYRTqnFejkFP-peAKHNHRAl2I
 
 

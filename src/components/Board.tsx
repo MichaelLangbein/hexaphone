@@ -33,13 +33,18 @@ export class Board extends React.Component<{ boardSvc: BoardService }, { showSta
     }
 
     componentDidMount() {
-        setTimeout(() => {
-                if (this.canvas.current) {
-                    this.props.boardSvc.initBoard(
-                        this.canvas.current, window.innerWidth, window.innerHeight,
-                    );
-                }
-        }, 100);
+        const doOnTimeOut = () => {
+            if (this.canvas.current) {
+                this.props.boardSvc.initBoard(
+                    this.canvas.current, window.innerWidth, window.innerHeight,
+                );
+                console.log('board initialized')
+            } else {
+                setTimeout(doOnTimeOut, 100);
+                console.log('Waiting for board ...');
+            }
+        };
+        setTimeout(doOnTimeOut, 100);
     }
 
     render() {

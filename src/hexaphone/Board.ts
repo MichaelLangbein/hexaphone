@@ -48,7 +48,7 @@ export class Board implements Renderable {
          * touch.radiusX: [css-pixels, same scale as touch.screenX]
          */
 
-        // note: this needs to be changed if there are other ui-elements, like headers, menus etc
+        // @TODO: this needs to be changed if there are other ui-elements, like headers, menus etc
         const x = touch.clientX - this.getDisplayObject().x;
         const y = touch.clientY - this.getDisplayObject().y;
         const rX = touch.radiusX > 0 ? touch.radiusX : 10;
