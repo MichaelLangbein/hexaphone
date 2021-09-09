@@ -4,7 +4,11 @@
    1. graphics
 2. Ads
    1. https://www.google.com/adsense/signup/new/lead?gsessionid=uxpeelM8BpKF43M0T1CYRTqnFejkFP-peAKHNHRAl2I
-3. Android build
+
+
+## Instructions
+
+1. Android build
    1. https://ionicframework.com/docs/angular/your-first-app/6-deploying-mobile
    2. first build: `ionic build`
    3. create android project for first time: `ionic cap add android`
