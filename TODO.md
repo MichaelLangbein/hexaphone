@@ -4,9 +4,17 @@
    1. graphics
 2. Ads
    1. https://www.google.com/adsense/signup/new/lead?gsessionid=uxpeelM8BpKF43M0T1CYRTqnFejkFP-peAKHNHRAl2I
+3. Android build
+   1. https://ionicframework.com/docs/angular/your-first-app/6-deploying-mobile
+   2. first build: `ionic build`
+   3. create android project for first time: `ionic cap add android`
+   4. update android project from web project: `ionic cap copy`
+      1. update android project from web project after adding another capacitor-plugin (or any other (half-)native code): `ionic cap sync`
+   5. open android-code: `ionic cap open android`
 
 
-Later
+
+## Later
    1. Rotation / Scaling
       1. Board currently sized relative to window.innerHeight. Make that relative to ComponentHeight
          1. https://stackoverflow.com/questions/49058890/how-to-get-a-react-components-size-height-width-before-render
