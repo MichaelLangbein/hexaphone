@@ -28,11 +28,11 @@ export class Board extends React.Component<{ boardSvc: BoardService }> {
     componentDidMount() {
         console.log('board did mount')
         const doOnTimeOut = () => {
-            if (this.canvas.current && this.canvas.current.width) {
+            if (this.canvas.current && this.canvas.current.clientWidth) {
                 this.props.boardSvc.initBoard(
                     this.canvas.current, window.innerWidth, window.innerHeight,
                 );
-                console.log('board initialized with width ', this.canvas.current.width)
+                console.log('board initialized with width/clientWidth/windowWidth ', this.canvas.current.width, this.canvas.current.clientWidth, window.innerWidth);
             } else {
                 setTimeout(doOnTimeOut, 100);
                 console.log('Waiting for board ...');
