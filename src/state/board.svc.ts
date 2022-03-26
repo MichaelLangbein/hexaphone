@@ -83,14 +83,6 @@ export class BoardService {
     private fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number;
     /* @ts-ignore */
     private lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number;
-    /* @ts-ignore */
-    private clickListener: (evt: any) => void;
-    /* @ts-ignore */
-    private touchListener: (evt: any) => void;
-    /* @ts-ignore */
-    dragListener: (evt: any) => void;
-    /* @ts-ignore */
-    private tickerListener: (deltaT: number) => void;
     /** @ts-ignore */
     private tonality: Tonality;
     private touches$ = new Subject<number[]>();
@@ -120,12 +112,30 @@ export class BoardService {
         const board = new Board(synth, width, height, fillColor, lineColor);
         app.stage.addChild(board.getDisplayObject());
 
-        // on desktop
-        const clickListener = (evt: any) => {
-            const frequencies = board.click(evt);
-            this.touches$.next(frequencies);
+        const dragSampleRate = 25;
+        let dragging = false;
+        let dragTime: number;
+        const startDragListener = (evt: any) => {
+            dragging = true;
+            dragTime = new Date().getTime();
         };
-        canvas.addEventListener('click', clickListener);
+        const whileDraggingListener = (evt: any) => {
+            if (dragging) {
+                const currentTime = new Date().getTime();
+                const passedTime = currentTime - dragTime;
+                dragTime = currentTime;
+                if (passedTime > dragSampleRate) {
+                    const frequencies = board.touch(evt);
+                    this.touches$.next(frequencies);
+                }
+            }
+        };
+        const endDragListener = (evt: any) => {
+            dragging = false;
+        }
+        canvas.addEventListener('mousedown', startDragListener);
+        canvas.addEventListener('mousemove', whileDraggingListener);
+        canvas.addEventListener('mouseup', endDragListener);
 
         // on mobile
         const touchListener = (evt: any) => {
@@ -154,6 +164,7 @@ export class BoardService {
         canvas.addEventListener('touchmove', dragListener);
 
 
+
         const tickerListener = (deltaT: number) => {
             board.update(deltaT);
         };
@@ -167,10 +178,6 @@ export class BoardService {
         this.synth = synth;
         this.fillColor = fillColor;
         this.lineColor = lineColor;
-        this.clickListener = clickListener;
-        this.touchListener = touchListener;
-        this.dragListener = dragListener;
-        this.tickerListener = tickerListener;
     }
 
     public initSynth() {
