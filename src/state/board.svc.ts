@@ -112,7 +112,7 @@ export class BoardService {
         const board = new Board(synth, width, height, fillColor, lineColor);
         app.stage.addChild(board.getDisplayObject());
 
-        const dragSampleRate = 25;
+        const dragSampleRate = 20;
         let dragging = false;
         let dragTime: number;
         const startDragListener = (evt: any) => {
@@ -132,10 +132,15 @@ export class BoardService {
         };
         const endDragListener = (evt: any) => {
             dragging = false;
-        }
+        };
+        const clickListener = (evt: any) => {
+            const frequencies = board.click(evt);
+            this.touches$.next(frequencies);
+        };
         canvas.addEventListener('mousedown', startDragListener);
         canvas.addEventListener('mousemove', whileDraggingListener);
         canvas.addEventListener('mouseup', endDragListener);
+        canvas.addEventListener('click', clickListener);
 
         // on mobile
         const touchListener = (evt: any) => {
