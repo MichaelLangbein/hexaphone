@@ -1,12 +1,14 @@
-import { Text } from '@pixi/text';
-import { Renderable } from "./Interfaces";
-import { AdvancedBloomFilter } from '@pixi/filter-advanced-bloom';
+import { Renderable } from "./Renderer";
 import { Synthesizer } from './Synthesizer';
-import { Container, Sprite, Texture } from 'pixi.js';
-import { delay } from 'rxjs/operators';
+
+
+// https://jameshfisher.com/2018/12/29/how-to-draw-sprites-on-an-html-canvas/
+// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
 
 
 const baseTexture = Texture.from('assets/sprites/hexagon.png');
+
+
 
 export class Key implements Renderable {
     private hexagon: Sprite;
@@ -49,21 +51,11 @@ export class Key implements Renderable {
 
         this.hexagon.addChild(this.text);
     }
-
-    getDisplayObject(): Container {
-        return this.hexagon;
+    
+    render(context: CanvasRenderingContext2D): void {
+        throw new Error("Method not implemented.");
     }
 
-    update(deltaT: number): void {
-        if (this.glowing > 0) {
-            this.glowing -= deltaT * 0.01;
-            if (this.glowing > 0 && this.hexagon.filters && this.hexagon.filters[0]) {
-                (this.hexagon.filters[0] as AdvancedBloomFilter).brightness = this.glowing * 10;
-            } else {
-                this.hexagon.filters = [];
-            }
-        }
-    }
 
     touched(force = 1.0, x: number, y: number, preventRetouch = false): number | void  {
         if (preventRetouch) {
@@ -91,12 +83,6 @@ export class Key implements Renderable {
         this.synth.play(this.frequency, force);
     
         this.glowing = 0.5;
-        this.hexagon.filters = [new AdvancedBloomFilter({
-            bloomScale: 2,
-            blur: 10,
-            brightness: 5,
-            quality: 10,
-        })];
 
         return this.frequency;
     }
