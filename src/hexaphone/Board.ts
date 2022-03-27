@@ -1,7 +1,6 @@
-import { Container } from '@pixi/display';
 import { Key } from './Key';
 import { getFrequencyNthTone, Tonality } from './helpers/music';
-import { Renderable } from './Interfaces';
+import { Renderable } from './Renderer';
 import { Synthesizer } from './Synthesizer';
 import { getHexIndicesAround, getKeyboardLayout, hexCoordsToXyCoords, xyCoordsToHexCoords } from './helpers/hexIndex';
 import { createKeys } from './helpers/board';
@@ -14,7 +13,6 @@ import { createKeys } from './helpers/board';
 export class Board implements Renderable {
 
     private keys: {[key: string]: Key} = {};
-    private container: Container;
     private scale: number = 1;
     
 
@@ -23,8 +21,14 @@ export class Board implements Renderable {
         fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
         lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
     ) {
-        this.container = new Container();
         this.buildKeys(width, height, fillColor, lineColor);
+    }
+
+    render(context: CanvasRenderingContext2D): void {
+        for (const keyName in this.keys) {
+            const key = this.keys[keyName];
+            key.render(context);
+        }
     }
 
     click(evt: MouseEvent, preventReclick = false): number[] {
@@ -76,36 +80,16 @@ export class Board implements Renderable {
         return frequencies;
     }
 
-    getDisplayObject(): Container {
-        return this.container;
-    }
-
-    update(deltaT: number) {
-        for (const index in this.keys) {
-            this.keys[index].update(deltaT);
-        }
-    }
-
     buildKeys(
         width: number, height: number,
         fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
         lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
         tonality?: Tonality
     ) {
-        while (this.container.children[0]) {
-            this.container.removeChildAt(0);
-        }
 
         const [keysPerRow, rows, scale] = getKeyboardLayout(width, height);
         const keys = createKeys(keysPerRow, rows, scale, this.synth, fillColor, lineColor, tonality || null);
         this.keys = keys;
-
-        for (const key of Object.values(keys)) {
-            this.container.addChild(key.getDisplayObject());
-        }
-
-        this.container.x = (width / 2) + (Math.sqrt(3) * scale / 2);
-        this.container.y = height / 2;
         this.scale = scale;
     }
 

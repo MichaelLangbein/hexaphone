@@ -1,14 +1,10 @@
-import { Application } from '@pixi/app';
-import { Renderer } from '@pixi/core';
-import { BatchRenderer } from '@pixi/core';
 import * as convert from 'color-convert';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-
+import { Observable, Subject } from 'rxjs';
+import { Renderer } from '../hexaphone/Renderer';
 import { Board } from '../hexaphone/Board';
 import { getNthToneFromFrequency, Tonality } from '../hexaphone/helpers/music';
 import { Synthesizer, Timbre } from '../hexaphone/Synthesizer';
 
-Renderer.registerPlugin('batch', BatchRenderer);
 
 
 
@@ -74,7 +70,7 @@ export class BoardService {
     /* @ts-ignore */
     private height: number;
     /* @ts-ignore */
-    private app: Application;
+    private renderer: Renderer;
     /* @ts-ignore */
     private board: Board;
     /* @ts-ignore */
@@ -88,29 +84,24 @@ export class BoardService {
     private touches$ = new Subject<number[]>();
 
     public initBoard(
-        canvas: HTMLCanvasElement, width: number, height: number,
+        canvas: HTMLCanvasElement,
+        width: number,
+        height: number,
         fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number = defaultFillColor,
         lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number = defaultLineColor,
         tonality: Tonality = null
     ): void {
-        if (this.app || this.board) {
+        if (this.renderer || this.board) {
             console.error("App has already been created!");
             return;
         }
 
-        const app: Application = new Application({
-            view: canvas,
-            width, height,
-            backgroundAlpha: 0,
-            antialias: false,
-            powerPreference: 'high-performance',
-            // autoStart: true
-        });
+        const renderer: Renderer = new Renderer(canvas);
 
         const synth = new Synthesizer();
 
         const board = new Board(synth, width, height, fillColor, lineColor);
-        app.stage.addChild(board.getDisplayObject());
+        renderer.addElement(board);
 
         const dragSampleRate = 20;
         let dragging = false;
@@ -166,21 +157,16 @@ export class BoardService {
         canvas.addEventListener('touchstart', touchListener);
         canvas.addEventListener('touchmove', dragListener);
 
-
-
-        const tickerListener = (deltaT: number) => {
-            board.update(deltaT);
-        };
-        app.ticker.add(tickerListener);
-
         this.canvas = canvas;
         this.width = width;
         this.height = height;
-        this.app = app;
+        this.renderer = renderer;
         this.board = board;
         this.synth = synth;
         this.fillColor = fillColor;
         this.lineColor = lineColor;
+
+        renderer.loop(30);
     }
 
     public initSynth() {
@@ -195,7 +181,7 @@ export class BoardService {
         }
         this.width = width;
         this.height = height;
-        this.app.renderer.resize(this.width, this.height);
+        this.renderer.resize(this.width, this.height);
         this.board.buildKeys(this.width, this.height, this.fillColor, this.lineColor, this.tonality);
     }
 
