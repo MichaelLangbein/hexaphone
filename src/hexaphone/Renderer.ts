@@ -118,3 +118,47 @@ export function drawHexagon(ctx: CanvasRenderingContext2D, paras: HexagonParamet
     }
 
 }
+
+
+
+interface RadialGradientParameters {
+    center: [number, number],
+    radius0: number,
+    radius1: number,
+    colorStops: {color: string, degree: number}[],
+}
+
+/**
+ * 
+const tipRadius = 40;
+const rad30 = 2 * Math.PI * 30 / 360;
+const distanceH = tipRadius * Math.cos(rad30);
+drawHexagon(ctx, {center: [40, 40], tipRadius: tipRadius, fillColor: 'yellow', text: 'first', textFont: '8px sans-serif'});
+drawHexagon(ctx, {center: [40 + 2 * distanceH, 40], tipRadius: tipRadius, fillColor: 'green', strokeColor: 'red', text: 'second', strokeThickness: 2});
+drawRadialGradient({
+    center: [60, 60],
+    radius0: 20,
+    radius1: 50,
+    colorStops: [{
+        color: 'rgba(255, 255, 255, 0.5)',
+        degree: 0
+    }, {
+        color: 'rgba(255, 255, 255, 0.0)',
+        degree: 1
+    }]
+})
+ */
+function drawRadialGradient(paras: RadialGradientParameters) {
+    const {center, radius0, radius1, colorStops} = paras;
+    const radialGradient = ctx.createRadialGradient(center[0], center[1], radius0, center[0], center[1], radius1);
+    for (const stop of colorStops) {
+        radialGradient.addColorStop(stop.degree, stop.color);
+    }
+    ctx.fillStyle = radialGradient;
+    const x0 = center[0] - radius1;
+    const y0 = center[1] - radius1;
+    const w = 2 * radius1;
+    const h = 2 * radius1;
+    ctx.fillRect(x0, y0, w, h);
+}
+
