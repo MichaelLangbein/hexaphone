@@ -153,9 +153,6 @@ export class BoardService {
             this.touches$.next(frequencies);
             evt.preventDefault();
         };
-        canvas.addEventListener('touchstart', touchListener);
-
-        // on mobile
         const dragListener = (evt: any) => {
             const frequencies: number[] = [];
             for (let i = 0; i < evt.touches.length; i++) {
@@ -166,6 +163,7 @@ export class BoardService {
             this.touches$.next(frequencies);
             evt.preventDefault();
         };
+        canvas.addEventListener('touchstart', touchListener);
         canvas.addEventListener('touchmove', dragListener);
 
 

@@ -1,9 +1,29 @@
 # TODOS
 
+0. Errors
+   1. Board sometimes massively zoomed in. Fixed upon reload.
+   2. Just entering http://hexaph.one leads to 404.
 1. Tutorial
-   1. graphics
+   1. More slides
+   2. graphics
+   3. Errors on moving forward and back
 2. Ads
    1. https://www.google.com/adsense/signup/new/lead?gsessionid=uxpeelM8BpKF43M0T1CYRTqnFejkFP-peAKHNHRAl2I
+   2. Google claims they cannot find that page.
+      1. Maybe need to deploy google-header first?
+3. Layout
+   1. Buttons: confirm click with `swoop` animation
+   2. Loading: not only loader-spinner. Add '... loading' text and a larger spinner.
+   3. Allow to cancel loading.
+   4. Keys:
+      1. Better glow animation
+      2. Also shine on neighbors
+      3. Maybe highlight I, III, V, VII?
+4. OSC
+   1. Make an OSC client
+      1. Form to connect to an OSC server (SonicPi)
+      2. Then send all clicks out to server; deactivate immediate sound output.
+5. Publish to android store
 
 
 ## Instructions
