@@ -34,7 +34,7 @@ export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed
                             <IonCardTitle>What is hexaphone?</IonCardTitle>
                         </IonCardHeader>
                         <IonCardContent>
-                            <p>Hexaphone is a musical instrument. Its keyboard has keys arranged in a pattern such that notes which sound harmonically together are also located close to each other. By the same logic hitting keys that are disharmonic is hard.</p>
+                            <p>Hexaphone is a musical instrument. Its keyboard has keys arranged in a pattern such that notes which sound harmonically together are also located close to each other. By the same logic hitting keys that are disharmonious is hard.</p>
                             <p>Try it out! Click on 'next' and hit any key.</p>
                         </IonCardContent>
                     </IonCard>
@@ -48,7 +48,7 @@ export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed
                             const subscription = this.touches$.pipe(
                                 filter((frequencies) => !!frequencies.length),
                                 delay(1500))
-                            .subscribe((freqs) => {
+                            .subscribe((frequencies) => {
                                 this.setState({ step: 2 });
                             });
                             this.subscriptions.push(subscription);
@@ -75,7 +75,7 @@ export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed
                             const subscription = this.touches$.pipe(
                                 filter((frequencies) => !!frequencies.length),
                                 delay(1500))
-                            .subscribe((freqs) => {
+                            .subscribe((frequencies) => {
                                 this.setState({ step: 3 });
                             });
                             this.subscriptions.push(subscription);

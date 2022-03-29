@@ -121,7 +121,7 @@ export function drawHexagon(ctx: CanvasRenderingContext2D, paras: HexagonParamet
 
 
 
-interface RadialGradientParameters {
+export interface RadialGradientParameters {
     center: [number, number],
     radius0: number,
     radius1: number,
@@ -148,7 +148,7 @@ drawRadialGradient({
     }]
 })
  */
-function drawRadialGradient(paras: RadialGradientParameters) {
+export function drawRadialGradient(ctx: CanvasRenderingContext2D, paras: RadialGradientParameters) {
     const {center, radius0, radius1, colorStops} = paras;
     const radialGradient = ctx.createRadialGradient(center[0], center[1], radius0, center[0], center[1], radius1);
     for (const stop of colorStops) {

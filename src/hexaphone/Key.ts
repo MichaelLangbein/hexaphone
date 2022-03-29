@@ -1,59 +1,35 @@
-import { Renderable } from "./Renderer";
+import { drawHexagon, Renderable } from "./Renderer";
 import { Synthesizer } from './Synthesizer';
 
-
-// https://jameshfisher.com/2018/12/29/how-to-draw-sprites-on-an-html-canvas/
-// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
-
-
-const baseTexture = Texture.from('assets/sprites/hexagon.png');
 
 
 
 export class Key implements Renderable {
-    private hexagon: Sprite;
-    private text: Text;
-    private frequency: number;
-    private synth: Synthesizer;
+
     private glowing = 0;
     
     constructor(
-        synth: Synthesizer,
-        fillColor: number, textColor: number, 
-        xPos: number, yPos: number, 
-        scale: number, lineThickness: number, 
-        frequency: number, text: string) {
-
-        this.synth = synth;
-        this.frequency = frequency;
-
-        const fontSize = 48;
-        
-        const hexagon: Sprite = new Sprite(baseTexture);
-        const baseSize = hexagon.texture.height / 2;
-        hexagon.anchor.set(0.5);
-        hexagon.x = xPos;
-        hexagon.y = yPos;
-        hexagon.scale.x = scale / baseSize;
-        hexagon.scale.y = scale / baseSize;
-        hexagon.tint = fillColor;
-        hexagon.filters = [];
-        this.hexagon = hexagon;
-
-        this.text = new Text(text, {
-            fontFamily: 'Arial',
-            fontSize: fontSize,
-            fill: textColor
-        });
-        this.text.anchor.x = 0.5;
-        this.text.anchor.y = 0.5;
-        this.text.cacheAsBitmap = true;
-
-        this.hexagon.addChild(this.text);
-    }
+        private synth: Synthesizer,
+        private fillColor: string, 
+        private textColor: string, 
+        private xPos: number,
+        private yPos: number,
+        private radius: number,
+        private lineThickness: number, 
+        private frequency: number,
+        private text: string) {}
     
     render(context: CanvasRenderingContext2D): void {
-        throw new Error("Method not implemented.");
+        drawHexagon(context, {
+            center: [this.xPos, this.yPos],
+            tipRadius: this.radius,
+            fillColor: this.fillColor,
+            strokeColor: this.textColor,
+            textColor: this.textColor,
+            strokeThickness: this.lineThickness,
+            text: this.text,
+            textFont: '10px sans-serif'
+        });
     }
 
 
@@ -63,20 +39,21 @@ export class Key implements Renderable {
         }
 
         const tolerance = 1.1;
-        const deltaX = x - this.hexagon.x;
-        const deltaY = y - this.hexagon.y;
+        const deltaX = x - this.xPos;
+        const deltaY = y - this.yPos;
+        const yRadius = this.radius;
+        const xRadius = this.radius * Math.cos(2 * Math.PI * 30 / 360);
         // if point is off horizontally ...
-        if (Math.abs(deltaX) > tolerance * this.hexagon.scale.x * this.hexagon.texture.width / 2) {
+        if (Math.abs(deltaX) > tolerance * xRadius) {
             return;
         }
         // if point is off vertically ...
-        if (Math.abs(deltaY) > tolerance * this.hexagon.scale.y * this.hexagon.texture.height / 2) {
+        if (Math.abs(deltaY) > tolerance * yRadius) {
             return;
         }
         // if point is off diagonally ...
-        const h = this.hexagon.scale.y * this.hexagon.texture.height / 2;
-        const Y = h - deltaX / Math.sqrt(3);
-        if (deltaY > tolerance * Y) {
+        const d = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        if (d > tolerance * xRadius) {
             return;
         }
 

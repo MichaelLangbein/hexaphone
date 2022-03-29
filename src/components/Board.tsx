@@ -22,11 +22,11 @@ export class Board extends React.Component<{ boardSvc: BoardService }> {
         window.addEventListener('orientationchange', () => doResize());  // mobile
         window.addEventListener('resize', () => doResize());  // browser
 
-        console.log('board constructed')
+        console.log('board constructed');
     }
 
     componentDidMount() {
-        console.log('board did mount')
+        console.log('board did mount');
         const doOnTimeOut = () => {
             if (this.canvas.current && this.canvas.current.clientWidth) {
                 this.props.boardSvc.initBoard(

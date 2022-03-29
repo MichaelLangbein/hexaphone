@@ -74,3 +74,12 @@ export function getKeyboardLayout(width: number, height: number) {
     const keysPerRow = (width - (Math.sqrt(3) * scale / 2)) / (Math.sqrt(3) * scale);
     return [keysPerRow, rows, scale];
 }
+
+
+export const xyCoordsToTLCoords = (x: number, y: number, width: number, height: number): [number, number] => {
+    return [x + width / 2, y + height / 2];
+}
+
+export const tlCoordsToXyCoords = (xTl: number, yTl: number, width: number, height: number): [number, number] => {
+    return [xTl - width / 2, yTl - height / 2];
+}

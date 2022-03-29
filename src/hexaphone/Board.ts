@@ -2,7 +2,7 @@ import { Key } from './Key';
 import { getFrequencyNthTone, Tonality } from './helpers/music';
 import { Renderable } from './Renderer';
 import { Synthesizer } from './Synthesizer';
-import { getHexIndicesAround, getKeyboardLayout, hexCoordsToXyCoords, xyCoordsToHexCoords } from './helpers/hexIndex';
+import { getHexIndicesAround, getKeyboardLayout, tlCoordsToXyCoords, xyCoordsToHexCoords } from './helpers/hexIndex';
 import { createKeys } from './helpers/board';
 
 /**
@@ -14,12 +14,11 @@ export class Board implements Renderable {
 
     private keys: {[key: string]: Key} = {};
     private scale: number = 1;
-    
 
     constructor(
-        private synth: Synthesizer, width: number, height: number,
-        fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
-        lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
+        private synth: Synthesizer, private width: number, private height: number,
+        fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => string,
+        lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => string,
     ) {
         this.buildKeys(width, height, fillColor, lineColor);
     }
@@ -31,21 +30,17 @@ export class Board implements Renderable {
         }
     }
 
-    click(evt: MouseEvent, preventReclick = false): number[] {
+    click(evt: MouseEvent, preventReClick = false): number[] {
         // note: this needs to be changed if there are other ui-elements, like headers, menus etc
         const frequencies: number[] = [];
-        const x = evt.x - this.getDisplayObject().x;
-        const y = evt.y - this.getDisplayObject().y;
-
+        const xTl = evt.x;
+        const yTl = evt.y;
+        const [x, y] = tlCoordsToXyCoords(xTl, yTl, this.width, this.height);
         const coords = xyCoordsToHexCoords(this.scale, x, y);
         const hexIndex = `${coords[0]}/${coords[1]}/${coords[2]}`;
-        for (const candidateHexIndex in this.keys) {
-            if (candidateHexIndex === hexIndex) {
-                const key = this.keys[candidateHexIndex];
-                const freq = key.touched(1.0, x, y, preventReclick);
-                if (freq) frequencies.push(freq);
-            }
-        }
+        const key = this.keys[hexIndex];
+        const freq = key.touched(1.0, x, y, preventReClick);
+        if (freq) frequencies.push(freq);
         return frequencies;
     }
 
@@ -57,20 +52,21 @@ export class Board implements Renderable {
 
         // @TODO: this needs to be changed if there are other ui-elements, like headers, menus etc
         const frequencies: number[] = [];
-        const x = touch.clientX - this.getDisplayObject().x;
-        const y = touch.clientY - this.getDisplayObject().y;
+        const xTl = touch.clientX;
+        const yTl = touch.clientY;
         const rX = touch.radiusX > 0 ? touch.radiusX : 10;
         const rY = touch.radiusY > 0 ? touch.radiusY : 10;
-        const hexCoordsList = getHexIndicesAround(x, y, this.scale, rX, rY);
+        const [xc, yc] = tlCoordsToXyCoords(xTl, yTl, this.width, this.height);
+        const hexCoordsList = getHexIndicesAround(xc, yc, this.scale, rX, rY);
         for (const hexCoords of hexCoordsList) {
             for (const hexCoordsCandidate in this.keys) {
                 if (hexCoordsCandidate === hexCoords) {
                     const key = this.keys[hexCoordsCandidate];
                     let freq = null;
                     if (touch.force > 0) {
-                        freq = key.touched(touch.force, x, y, preventRetouch);
+                        freq = key.touched(touch.force, xTl, yTl, preventRetouch);
                     } else {
-                        freq = key.touched(1.0, x, y, preventRetouch);
+                        freq = key.touched(1.0, xTl, yTl, preventRetouch);
                     }
                     if (freq) frequencies.push(freq);
                     break;
@@ -82,13 +78,14 @@ export class Board implements Renderable {
 
     buildKeys(
         width: number, height: number,
-        fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
-        lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => number,
+        fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => string,
+        lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => string,
         tonality?: Tonality
     ) {
-
+        this.width = width;
+        this.height = height;
         const [keysPerRow, rows, scale] = getKeyboardLayout(width, height);
-        const keys = createKeys(keysPerRow, rows, scale, this.synth, fillColor, lineColor, tonality || null);
+        const keys = createKeys(keysPerRow, rows, scale, width, height, this.synth, fillColor, lineColor, tonality || null);
         this.keys = keys;
         this.scale = scale;
     }
