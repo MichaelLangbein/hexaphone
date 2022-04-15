@@ -37,6 +37,7 @@ export class Renderer {
             const endTime = new Date().getTime();
             const timePassed = endTime - startTime;
             const timeLeft = mspf - timePassed;
+            if (timeLeft < 0) console.log(`rendering took too long: ${timePassed / 1000}s`)
             setTimeout(doLoop, Math.max(0, timeLeft));
         }
         doLoop();

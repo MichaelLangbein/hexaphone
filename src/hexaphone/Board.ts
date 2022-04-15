@@ -39,7 +39,7 @@ export class Board implements Renderable {
         const coords = xyCoordsToHexCoords(this.scale, x, y);
         const hexIndex = `${coords[0]}/${coords[1]}/${coords[2]}`;
         const key = this.keys[hexIndex];
-        const freq = key.touched(1.0, x, y, preventReClick);
+        const freq = key.touched(1.0, xTl, yTl, preventReClick);
         if (freq) frequencies.push(freq);
         return frequencies;
     }
