@@ -1,3 +1,4 @@
+import { hsl } from 'd3-color';
 import { drawHexagon, Renderable } from "./Renderer";
 import { Synthesizer } from './Synthesizer';
 
@@ -6,7 +7,7 @@ import { Synthesizer } from './Synthesizer';
 
 export class Key implements Renderable {
 
-    private glowing = 0;
+    private glowing = 0.0;
     
     constructor(
         private synth: Synthesizer,
@@ -19,17 +20,24 @@ export class Key implements Renderable {
         private frequency: number,
         private text: string) {}
     
-    render(context: CanvasRenderingContext2D): void {
-        drawHexagon(context, {
-            center: [this.xPos, this.yPos],
-            tipRadius: this.radius,
-            fillColor: this.fillColor,
-            strokeColor: this.textColor,
-            textColor: this.textColor,
-            strokeThickness: this.lineThickness,
-            text: this.text,
-            textFont: '10px sans-serif'
-        });
+    render(context: CanvasRenderingContext2D, force: boolean): void {
+        if (this.glowing > 0 || force) {
+            console.log('drawing...')
+            const fillHsl = hsl(this.fillColor);
+            const newFillHsl = fillHsl.brighter(this.glowing);
+            const newFillRgb = newFillHsl.formatRgb();
+            drawHexagon(context, {
+                center: [this.xPos, this.yPos],
+                tipRadius: this.radius,
+                fillColor: newFillRgb,
+                strokeColor: this.textColor,
+                textColor: this.textColor,
+                strokeThickness: this.lineThickness,
+                text: this.text,
+                textFont: '10px sans-serif'
+            });
+            this.glowing -= 0.02;
+        }
     }
 
 
@@ -59,7 +67,7 @@ export class Key implements Renderable {
 
         this.synth.play(this.frequency, force);
     
-        this.glowing = 0.5;
+        this.glowing = 1.0;
 
         return this.frequency;
     }

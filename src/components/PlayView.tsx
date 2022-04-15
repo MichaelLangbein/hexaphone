@@ -2,9 +2,8 @@ import {
   IonContent, IonPage, IonFab, IonFabButton, IonIcon,
   IonFabList, IonModal
 } from '@ionic/react';
-import { arrowDownCircle, help, musicalNote, radioOutline, text } from 'ionicons/icons';
+import { arrowDownCircle, help, musicalNote, radioOutline } from 'ionicons/icons';
 import React from 'react';
-import { Ad } from './Ad';
 import { InstrumentedBoard as Board } from './Board';
 import { Welcome } from './Welcome';
 import { TimbreSelection } from './TimbreSelection';

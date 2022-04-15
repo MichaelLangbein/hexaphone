@@ -1,6 +1,6 @@
 
 export interface Renderable {
-    render(context: CanvasRenderingContext2D): void;
+    render(context: CanvasRenderingContext2D, force?: boolean): void;
 }
 
 export class Renderer {

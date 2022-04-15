@@ -3,7 +3,7 @@ import { getFrequencyNthTone, getNoteName, getNthToneFromFrequency, isInKey, Ton
 import { Key } from "../Key";
 import { Synthesizer } from "../Synthesizer";
 import { hsl, rgb } from "d3-color";
-import { darkColorHSL, lightColorHSL } from "../../shared";
+import { getColors } from "../../shared";
 
 
 
@@ -68,6 +68,8 @@ export const defaultFillColorFunction = (frequency: number, x: number, y: number
         d = m;
     }
     const p = d / 12;
+
+    const {lightColorHSL, darkColorHSL} = getColors();
 
     const h = p * (darkColorHSL.h - lightColorHSL.h) + lightColorHSL.h;
     const s = p * (darkColorHSL.s - lightColorHSL.s) + lightColorHSL.s;

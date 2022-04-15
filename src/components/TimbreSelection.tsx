@@ -1,6 +1,5 @@
 import { IonContent, IonItem, IonLabel, IonList, IonListHeader, IonRadio, IonRadioGroup, IonSpinner } from '@ionic/react';
 import React from 'react';
-import { tap } from 'rxjs/operators';
 import { Timbre } from '../hexaphone/Synthesizer';
 import { BoardService } from '../state/board.svc';
 

@@ -1,9 +1,16 @@
-import { color, hsl, RGBColor, rgb } from 'd3-color';
+import { hsl, rgb } from 'd3-color';
 
-export const lightColor  = rgb(getComputedStyle(document.documentElement).getPropertyValue('--ion-color-light'));
-export const mediumColor = rgb(getComputedStyle(document.documentElement).getPropertyValue('--ion-color-medium'));
-export const darkColor   = rgb(getComputedStyle(document.documentElement).getPropertyValue('--ion-color-dark'));
 
-export const lightColorHSL  = hsl(lightColor);
-export const mediumColorHSL = hsl(mediumColor);
-export const darkColorHSL   = hsl(darkColor);
+
+
+export function getColors() {
+    const lightColor  = rgb(getComputedStyle(document.documentElement).getPropertyValue('--ion-color-light'));
+    const mediumColor = rgb(getComputedStyle(document.documentElement).getPropertyValue('--ion-color-medium'));
+    const darkColor   = rgb(getComputedStyle(document.documentElement).getPropertyValue('--ion-color-dark'));
+    
+    const lightColorHSL  = hsl(lightColor);
+    const mediumColorHSL = hsl(mediumColor);
+    const darkColorHSL   = hsl(darkColor);
+
+    return {lightColor, mediumColor, darkColor, lightColorHSL, mediumColorHSL, darkColorHSL};
+}
