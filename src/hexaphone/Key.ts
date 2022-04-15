@@ -36,7 +36,7 @@ export class Key implements Renderable {
                 text: this.text,
                 textFont: '10px sans-serif'
             });
-            this.glowing -= 0.01;
+            this.glowing -= 0.02;
         }
     }
 

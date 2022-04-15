@@ -1,5 +1,5 @@
 import { Key } from './Key';
-import { getFrequencyNthTone, Tonality } from './helpers/music';
+import { Tonality } from './helpers/music';
 import { Renderable } from './Renderer';
 import { Synthesizer } from './Synthesizer';
 import { getHexIndicesAround, getKeyboardLayout, tlCoordsToXyCoords, xyCoordsToHexCoords } from './helpers/hexIndex';

@@ -1,5 +1,5 @@
-import { Compressor, Frequency, Limiter, PolySynth, Sampler,
-    start, Synth, ToneAudioBuffer, ToneAudioNode, Transport } from 'tone';
+import { Compressor, PolySynth, Sampler,
+    start, Synth, ToneAudioNode } from 'tone';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
