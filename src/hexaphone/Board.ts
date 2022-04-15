@@ -14,6 +14,7 @@ export class Board implements Renderable {
 
     private keys: {[key: string]: Key} = {};
     private scale: number = 1;
+    private redraw = true;
 
     constructor(
         private synth: Synthesizer, private width: number, private height: number,
@@ -24,10 +25,14 @@ export class Board implements Renderable {
     }
 
     render(context: CanvasRenderingContext2D): void {
+        if (this.redraw) {
+            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        }
         for (const keyName in this.keys) {
             const key = this.keys[keyName];
-            key.render(context);
+            key.render(context, this.redraw);
         }
+        this.redraw = false;
     }
 
     click(evt: MouseEvent, preventReClick = false): number[] {
@@ -36,7 +41,7 @@ export class Board implements Renderable {
         const xTl = evt.x;
         const yTl = evt.y;
         const [x, y] = tlCoordsToXyCoords(xTl, yTl, this.width, this.height);
-        const coords = xyCoordsToHexCoords(this.scale, x, y);
+        const coords = xyCoordsToHexCoords(this.scale, x, y);console.log(coords)
         const hexIndex = `${coords[0]}/${coords[1]}/${coords[2]}`;
         const key = this.keys[hexIndex];
         const freq = key.touched(1.0, x, y, preventReClick);
@@ -88,6 +93,7 @@ export class Board implements Renderable {
         const keys = createKeys(keysPerRow, rows, scale, width, height, this.synth, fillColor, lineColor, tonality || null);
         this.keys = keys;
         this.scale = scale;
+        this.redraw = true;
     }
 
 }

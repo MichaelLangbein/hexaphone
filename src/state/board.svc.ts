@@ -64,6 +64,8 @@ export class BoardService {
         const board = new Board(synth, width, height, fillColor, lineColor);
         renderer.addElement(board);
 
+
+
         const dragSampleRate = 20;
         let dragging = false;
         let dragTime: number;
@@ -117,6 +119,9 @@ export class BoardService {
         };
         canvas.addEventListener('touchstart', touchListener);
         canvas.addEventListener('touchmove', dragListener);
+
+
+        
 
         this.canvas = canvas;
         this.width = width;
