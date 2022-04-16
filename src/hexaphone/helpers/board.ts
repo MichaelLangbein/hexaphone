@@ -19,24 +19,24 @@ export function createKeys(
     const keys: {[index: string]: Key} = {};
 
     const betaMin = Math.round(-nrRows / 2);
-    const betaMax = Math.round(nrRows / 2);
+    const betaMax = Math.round( nrRows / 2);
     for (let beta = betaMin; beta < betaMax; beta++) {
-        const alphaMin = Math.round(- nrKeysPerRow / 2 - beta * 0.5);
-        const alphaMax = Math.round(nrKeysPerRow / 2 - beta * 0.5);
+        const alphaMin = Math.round( (- nrKeysPerRow - beta + 1) / 2.0);
+        const alphaMax = Math.round( (  nrKeysPerRow - beta + 1) / 2.0);
         for (let alpha = alphaMin; alpha < alphaMax; alpha++) {
             const gamma = - alpha - beta;
             const index = `${alpha}/${beta}/${gamma}`;
             const frequency = getFrequencyFromHexCoords(alpha, beta, gamma);
-            const [xPosCenter, yPosCenter] = hexCoordsToXyCoords(scale, alpha, beta, gamma);
-            const [xPos, yPos] = xyCoordsToTLCoords(xPosCenter, yPosCenter, width, height);
-            const fc = fillColor(frequency, xPos, yPos, alpha, beta, gamma);
-            const lc = lineColor(frequency, xPos, yPos, alpha, beta, gamma);
+            const [xC, yC] = hexCoordsToXyCoords(scale, alpha, beta, gamma);
+            const [xTl, yTl] = xyCoordsToTLCoords(xC, yC, width, height);
+            const fc = fillColor(frequency, xTl, yTl, alpha, beta, gamma);
+            const lc = lineColor(frequency, xTl, yTl, alpha, beta, gamma);
             let scaleFactor = 1.0;
             if (tonality && !isInKey(frequency, tonality)) {
                 scaleFactor = 0.7;
             }
             const label = getNoteName(frequency, tonality);
-            const key = new Key(synth, fc, lc, xPos + scale * Math.cos(2 * Math.PI * 30 / 360), yPos, scale * scaleFactor, scale * 0.0125, frequency, label);
+            const key = new Key(synth, fc, lc, xTl, yTl, scale * scaleFactor, scale * 0.0125, frequency, label);
             keys[index] = key;
         }
     }
