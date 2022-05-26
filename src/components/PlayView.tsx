@@ -8,7 +8,7 @@ import { InstrumentedBoard as Board } from './Board';
 import { Welcome } from './Welcome';
 import { TimbreSelection } from './TimbreSelection';
 import { TonalitySelection } from './TonalitySelection';
-import { Tutorial } from './Tutorial';
+import { Tutorial } from './tutorial/Tutorial';
 import { BoardService } from '../state/board.svc';
 
 

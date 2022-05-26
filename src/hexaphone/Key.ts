@@ -22,7 +22,6 @@ export class Key implements Renderable {
     
     render(context: CanvasRenderingContext2D, force: boolean): void {
         if (this.glowing > 0 || force) {
-            console.log('drawing...')
             const fillHsl = hsl(this.fillColor);
             const newFillHsl = fillHsl.brighter(this.glowing);
             const newFillRgb = newFillHsl.formatRgb();

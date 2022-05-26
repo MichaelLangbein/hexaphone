@@ -51,6 +51,8 @@ export class BoardService {
         lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => string = defaultLineColorFunction,
         tonality: Tonality = null
     ): void {
+        console.log("Initializing board ...");
+
         if (this.renderer || this.board) {
             console.error("App has already been created!");
             return;
@@ -142,6 +144,7 @@ export class BoardService {
 
     public setBoardSize(width: number, height: number): void {
         if (width === this.width && height === this.height) return;
+        console.log("Setting board size ...");
         this.width = width;
         this.height = height;
         this.renderer.resize(this.width, this.height);

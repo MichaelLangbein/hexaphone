@@ -1,12 +1,8 @@
 # TODOS
 
-0. Errors
-   1. Board sometimes massively zoomed in. Fixed upon reload.
-   2. Just entering http://hexaph.one leads to 404.
 1. Tutorial
-   1. More slides
-   2. graphics
-   3. Errors on moving forward and back
+   1. Slides explaining labels, tonality, and timbre
+      1. Requires a service that holds the current state of (some-menu)-is-open
 2. Ads
    1. https://www.google.com/adsense/signup/new/lead?gsessionid=uxpeelM8BpKF43M0T1CYRTqnFejkFP-peAKHNHRAl2I
    2. Google claims they cannot find that page.
@@ -42,13 +38,3 @@
    1. Rotation / Scaling
       1. Board currently sized relative to window.innerHeight. Make that relative to ComponentHeight
          1. https://stackoverflow.com/questions/49058890/how-to-get-a-react-components-size-height-width-before-render
-   2. Performance
-      1. We're already...
-         1. using sprites instead of graphics
-         2. caching text as Bitmap
-         3. reduced bloom-shader quality
-      2. Findings with spectorjs:
-         1. pixi has to redraw the whole board with every animation-frame
-         2. something - probably the glow-shader, or the board-graphics-drawing process - causes a lot of jumping between the non-canvas framebuffers 1 and 2. Keeps jumping between texture 56 and 57 and buffer 5 and 4, drawing and clearing again.
-      3. Adding a **FilterArea** while ticker-plugin on causes error (ticker already defined)
-      4. Somehow grouping keys so that they don't need to be redrawn when not changed?
