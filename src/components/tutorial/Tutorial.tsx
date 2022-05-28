@@ -94,10 +94,12 @@ export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed
                         label: 'OK',
                         action: () => this.stateFwd()
                     }]}>
-                    <p>Notes that sound harmonious together are close to each other.</p>
+                    <p>Notes that sound harmonious together are located close to each other.</p>
                     <p>A major chord consists of three notes: the root, the major third, and the fifth.</p>
                     <p>In hexaphone's keyboard-layout, this corresponds to hitting three keys that form an upward-pointing triangle.</p>
-                    <img src="assets/tutorial/major_chord.gif" alt="major chord" style={{width: '30vh'}} />
+                    <div style={{display: 'flex', 'justifyContent': 'center'}}>
+                        <img src="assets/tutorial/major_chord.gif" alt="major chord" style={{width: '30vh'}} />
+                    </div>
                     <p>Try it out!</p>
                 </TutorialCard>
 

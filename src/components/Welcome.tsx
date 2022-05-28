@@ -5,12 +5,10 @@ export class Welcome extends React.Component<{ onPlayClicked: () => void, onTuto
     render() {
         return (
             <IonContent>
-                <IonCard>
-                    <IonCardHeader>
-                        <IonCardTitle>Welcome to Hexaphone!</IonCardTitle>
-                        <IonCardSubtitle>The ergonomic keyboard</IonCardSubtitle>
-                    </IonCardHeader>
-                    <IonCardContent>
+                <div style={{margin: '5%'}}>
+                    <h1>Welcome to Hexaphone!</h1>
+                    <h4>The ergonomic keyboard</h4>
+                    <div>
                         <img alt="hexaphone logo" src="./assets/sprites/hexagonAndKey.svg" style={{
                             height: "20%",
                             width: "20%",
@@ -28,8 +26,8 @@ export class Welcome extends React.Component<{ onPlayClicked: () => void, onTuto
                                 Play!
                             </IonLabel>
                         </IonItem>
-                    </IonCardContent>
-                </IonCard>
+                    </div>
+                </div>
             </IonContent>
         );
 

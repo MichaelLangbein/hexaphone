@@ -1,4 +1,4 @@
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonGrid, IonModal, IonRow } from '@ionic/react';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonModal, IonRow } from '@ionic/react';
 import { FC } from 'react';
 
 
@@ -16,21 +16,19 @@ const TutorialCard: FC<TutorialCardArgs> = (args: TutorialCardArgs) => {
 
     return <>
         <IonModal isOpen={args.open}>
-            <IonCard>
-                <IonCardHeader>
-                    <IonCardTitle>{args.title}</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>
+            <IonContent>
+                <div style={{ margin: '5%' }}>
+                    <h2>{args.title}</h2>
                     {args.children}
-                </IonCardContent>
-            </IonCard>
-            <IonGrid>
-                <IonRow>
-                    { args.buttons.map((b, i) => {
-                        return  <IonCol key={i}><IonButton onClick={b.action}>{b.label}</IonButton></IonCol>;
-                    })}
-                </IonRow>
-            </IonGrid>
+                    <IonGrid>
+                        <IonRow>
+                            {args.buttons.map((b, i) => {
+                                return <IonCol key={i}><IonButton onClick={b.action} expand="block">{b.label}</IonButton></IonCol>;
+                            })}
+                        </IonRow>
+                    </IonGrid>
+                </div>
+            </IonContent>
         </IonModal>
     </>;
 };
