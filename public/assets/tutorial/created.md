@@ -1,0 +1,3 @@
+- created using rive: https://editor.rive.app/
+- exported as png-collection (30fps)
+- converted to gif with `convert -delay 3 -loop 0 *.png major_chord.gif`x 

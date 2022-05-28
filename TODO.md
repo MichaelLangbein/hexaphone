@@ -1,13 +1,16 @@
 # TODOS
 
-1. Tutorial
+1. No sound files loaded when used as PWA or as Webpage on IOS.
+2. Run as app on smartphone
+3. Tutorial
    1. Slides explaining labels, tonality, and timbre
       1. Requires a service that holds the current state of (some-menu)-is-open
-2. Ads
+   2. Graphics for all slides
+4. Ads
    1. https://www.google.com/adsense/signup/new/lead?gsessionid=uxpeelM8BpKF43M0T1CYRTqnFejkFP-peAKHNHRAl2I
    2. Google claims they cannot find that page.
       1. Maybe need to deploy google-header first?
-3. Layout
+5. Layout
    1. Buttons: confirm click with `swoop` animation
    2. Loading: not only loader-spinner. Add '... loading' text and a larger spinner.
    3. Allow to cancel loading.
@@ -15,11 +18,11 @@
       1. Better glow animation
       2. Also shine on neighbors
       3. Maybe highlight I, III, V, VII?
-4. OSC
+6. OSC
    1. Make an OSC client
       1. Form to connect to an OSC server (SonicPi)
       2. Then send all clicks out to server; deactivate immediate sound output.
-5. Publish to android store
+7. Publish to android store
 
 
 ## Instructions
