@@ -92,13 +92,13 @@ class PlayView extends React.Component<{}, PlayViewState> {
             </IonFabButton>
             <IonFabList>
               <IonFabButton color="medium" onClick={() => this.setState((oldState, props) => ({ ...oldState, showTimbreModal: true }))}>
-                <IonIcon icon={radioOutline}></IonIcon>
+                <span title="timbre"><IonIcon icon={radioOutline}></IonIcon></span>
               </IonFabButton>
               <IonFabButton color="medium" onClick={() => this.setState((oldState, props) => ({ ...oldState, showTonalityModal: true }))}>
-                <IonIcon icon={musicalNote}></IonIcon>
+                <span title="tonality"><IonIcon icon={musicalNote}></IonIcon></span>
               </IonFabButton>
               <IonFabButton color="medium"  onClick={() => this.setState((oldState, props) => ({ ...oldState, showTutorialModal: true }))}>
-                <IonIcon icon={help}></IonIcon>
+                <span title="tutorial"><IonIcon icon={help}></IonIcon></span>
               </IonFabButton>
             </IonFabList>
           </IonFab>

@@ -12,6 +12,7 @@ import '@ionic/react/css/typography.css';
 
 /* Theme variables */
 import './variables.css';
+import './custom_styles.css';
 
 
 const App: React.FC = () => (

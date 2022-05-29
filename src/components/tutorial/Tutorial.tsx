@@ -136,6 +136,9 @@ export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed
                     <p>Very good!</p>
                     <p>A minor chord consists of the root, the minor third, and the fifth.</p>
                     <p>This corresponds to hitting three keys that form a downward-pointing triangle.</p>
+                    <div style={{display: 'flex', 'justifyContent': 'center'}}>
+                        <img src="assets/tutorial/minor_chord.gif" alt="minor chord" style={{width: '30vh'}} />
+                    </div>
                     <p>Try it out!</p>
                 </TutorialCard>
 
