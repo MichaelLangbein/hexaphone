@@ -10,7 +10,7 @@ export class TonalitySelection extends React.Component<{ boardSvc: BoardService,
     constructor(props: any) {
         super(props);
         this.state = {
-            tonality: this.props.boardSvc.getTonality()
+            tonality: this.props.boardSvc.getTonalitySync()
         };
     }
 

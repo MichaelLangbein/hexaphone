@@ -10,7 +10,7 @@ export class TimbreSelection extends React.Component<{ boardSvc: BoardService, o
     constructor(props: any) {
         super(props);
         this.state = {
-            timbre: this.props.boardSvc.getTimbre(),
+            timbre: this.props.boardSvc.getTimbreSync(),
             loading: false
         };
     }

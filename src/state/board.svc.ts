@@ -1,9 +1,10 @@
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Renderer } from '../hexaphone/Renderer';
 import { Board } from '../hexaphone/Board';
 import { Tonality } from '../hexaphone/helpers/music';
 import { Synthesizer, Timbre } from '../hexaphone/Synthesizer';
 import { defaultFillColorFunction, defaultLineColorFunction } from '../hexaphone/helpers/board';
+import { first, flatMap, mergeMap } from 'rxjs/operators';
 
 
 
@@ -40,7 +41,11 @@ export class BoardService {
     /* @ts-ignore */
     private lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => string;
     /** @ts-ignore */
-    private tonality: Tonality;
+    private tonality$: BehaviorSubject<Tonality>;
+    /** @ts-ignore */
+    private timbre$: BehaviorSubject<Timbre>;
+    /** @ts-ignore */
+    private timbreLoaded$: Observable<boolean>;
     private touches$ = new Subject<number[]>();
 
     public initBoard(
@@ -133,7 +138,9 @@ export class BoardService {
         this.synth = synth;
         this.fillColor = fillColor;
         this.lineColor = lineColor;
-        this.tonality = tonality;
+        this.tonality$ = new BehaviorSubject(tonality);
+        this.tonality$.subscribe(t => this.board.buildKeys(this.width, this.height, this.fillColor, this.lineColor, t));
+        this.timbre$ = new BehaviorSubject<Timbre>(this.synth.getTimbre());
 
         renderer.loop(30);
     }
@@ -148,28 +155,36 @@ export class BoardService {
         this.width = width;
         this.height = height;
         this.renderer.resize(this.width, this.height);
-        this.board.buildKeys(this.width, this.height, this.fillColor, this.lineColor, this.tonality);
+        this.board.buildKeys(this.width, this.height, this.fillColor, this.lineColor, this.tonality$.getValue());
     }
 
     public loadSamplerData(timbre: Timbre): Observable<boolean> {
         return this.synth.loadSamplerData(timbre);
     }
 
-    public getTimbre(): Timbre {
-        return this.synth.getTimbre();
+    public getTimbre(): Observable<Timbre> {
+        return this.timbre$;
+    }
+
+    public getTimbreSync(): Timbre {
+        return this.timbre$.getValue();
     }
 
     public setTimbre(timbre: Timbre): Observable<boolean> {
-        return this.synth.setTimbre(timbre);
+        this.timbre$.next(timbre);
+        return this.timbre$.pipe(mergeMap(t => this.synth.setTimbre(t)), first());
     }
 
-    public getTonality(): Tonality {
-        return this.tonality;
+    public getTonality(): Observable<Tonality> {
+        return this.tonality$;
     };
 
+    public getTonalitySync(): Tonality {
+        return this.tonality$.getValue();
+    }
+
     public setTonality(tonality: Tonality) {
-        this.tonality = tonality;
-        this.board.buildKeys(this.width, this.height, this.fillColor, this.lineColor, tonality);
+        this.tonality$.next(tonality);
     }
 
     public listenToTouches(): Observable<number[]> {
