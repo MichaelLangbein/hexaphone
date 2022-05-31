@@ -1,10 +1,10 @@
 {
   "name": "hexaphone",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "dependencies": {
-    "@capacitor/android": "^2.5.0",
-    "@capacitor/core": "2.4.7",
+    "@capacitor/android": "3.4.3",
+    "@capacitor/core": "^3.4.3",
     "@ionic/react": "^5.9.3",
     "@ionic/react-router": "^5.9.3",
     "@testing-library/jest-dom": "^5.16.4",
