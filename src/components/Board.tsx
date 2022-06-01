@@ -16,7 +16,6 @@ export class Board extends React.Component<{ boardSvc: BoardService }> {
         const doResize = () => {
             if (this.canvas.current) {
                 this.props.boardSvc.setBoardSize(window.innerWidth, window.innerHeight);
-                this.props.boardSvc.initSynth();
             }
         };
         window.addEventListener('orientationchange', () => doResize());  // mobile
@@ -68,7 +67,7 @@ export class Board extends React.Component<{ boardSvc: BoardService }> {
 
     render() {
         return (
-            <div style={{ width: '100%', height: '100%' }}>
+            <div style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
                 <canvas ref={this.canvas}></canvas>
             </div>
 

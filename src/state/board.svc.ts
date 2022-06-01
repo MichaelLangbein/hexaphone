@@ -145,8 +145,8 @@ export class BoardService {
         renderer.loop(30);
     }
 
-    public initSynth() {
-        this.synth.start();
+    public initSynth(): Observable<boolean> {
+        return this.synth.start();
     }
 
     public setBoardSize(width: number, height: number): void {

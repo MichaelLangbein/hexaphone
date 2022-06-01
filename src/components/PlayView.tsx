@@ -16,7 +16,7 @@ interface PlayViewState {
   showWelcomeModal: boolean;
   showTutorialModal: boolean;
   showTimbreModal: boolean;
-  showTonalityModal: boolean
+  showTonalityModal: boolean;
 }
 
 const boardSvc = new BoardService();
@@ -42,17 +42,27 @@ class PlayView extends React.Component<{}, PlayViewState> {
       <IonPage>
         <IonContent fullscreen>
 
-          <IonModal isOpen={this.state.showWelcomeModal}>
+          {/* The welcome-modal, contrary to all others, may not be dismissed, 
+              because we need the click event to start the web-audio context. */}
+          <IonModal isOpen={this.state.showWelcomeModal} backdropDismiss={false}>
             <Welcome
-              onPlayClicked={ () => this.setState({
-                ...this.state,
-                showWelcomeModal: false
-              }) }
-              onTutorialClicked={ () => this.setState({
-                ...this.state,
-                showWelcomeModal: false,
-                showTutorialModal: true
-              }) }
+              onPlayClicked={() => {
+                boardSvc.initSynth().subscribe(s => {
+                  this.setState({
+                    ...this.state,
+                    showWelcomeModal: false
+                  })
+                })
+              }}
+              onTutorialClicked={() => {
+                boardSvc.initSynth().subscribe(s => {
+                  this.setState({
+                    ...this.state,
+                    showWelcomeModal: false,
+                    showTutorialModal: true
+                  })
+                })
+              }}
             ></Welcome>
           </IonModal>
 

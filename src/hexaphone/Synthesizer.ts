@@ -1,7 +1,7 @@
 import { Compressor, PolySynth, Sampler,
     start, Synth, ToneAudioNode } from 'tone';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { from, Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 
 export type Timbre = 'basic' | 'piano' | 'violin' | 'saxophone' | 'harp';
@@ -9,6 +9,7 @@ export type Timbre = 'basic' | 'piano' | 'violin' | 'saxophone' | 'harp';
 
 export class Synthesizer {
     
+    private state: 'offline' | 'running' = 'offline';
     private globalOutput: ToneAudioNode;
     private polySynth: PolySynth;
     private samplers: {[timbre: string]: Sampler};
@@ -23,9 +24,13 @@ export class Synthesizer {
         this.samplers = {};
     }
 
-    public start() {
-        start();
-        console.log('Synth started');
+    public start(): Observable<boolean> {
+        if (this.state === 'running') return of(true);
+        return from(start()).pipe(
+            tap(() => console.log('Started web-audio.')),
+            tap(() => this.state = 'running'),
+            map(() => true)
+        );
     }
 
     public loadSamplerData(timbre: Timbre): Observable<boolean> {

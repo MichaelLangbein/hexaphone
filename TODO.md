@@ -1,6 +1,7 @@
 # TODOS
 
-1. No sound files loaded when used as PWA or as Webpage on IOS.
+
+1. Nothing audible in safari
 2. Run as app on smartphone
 3. Ads
    1. https://www.google.com/adsense/signup/new/lead?gsessionid=uxpeelM8BpKF43M0T1CYRTqnFejkFP-peAKHNHRAl2I
