@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package net.codeandcolors.hexaphone;
 
 import com.getcapacitor.BridgeActivity;
 
