@@ -1,4 +1,4 @@
-import { Compressor, PolySynth, Sampler,
+import { Compressor, Gain, PolySynth, Sampler,
     start, Synth, ToneAudioNode } from 'tone';
 import { from, Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -11,6 +11,7 @@ export class Synthesizer {
     
     private state: 'offline' | 'running' = 'offline';
     private globalOutput: ToneAudioNode;
+    private globalGain: Gain;
     private polySynth: PolySynth;
     private samplers: {[timbre: string]: Sampler};
     private timbre: Timbre = 'basic';
@@ -20,7 +21,8 @@ export class Synthesizer {
         // If v > -30db, then v' = 30db + (v - 30dB)/3
         // https://www.reddit.com/r/askscience/comments/243ucv/how_is_it_possible_to_have_negative_decibels/
         this.globalOutput = new Compressor(-30, 4).toDestination();
-        this.polySynth = new PolySynth(Synth).connect(this.globalOutput);
+        this.globalGain = new Gain(1).connect(this.globalOutput);
+        this.polySynth = new PolySynth(Synth).connect(this.globalGain);
         this.samplers = {};
     }
 
@@ -62,11 +64,13 @@ export class Synthesizer {
 
     public play(frequency: number, force: number) {
         if (this.timbre === 'basic') {
+            this.globalGain.set({ gain: 440 / frequency }); // making higher notes less loud
             this.polySynth.triggerAttackRelease(frequency, 0.5);
         } else {
             if (!(this.timbre in this.samplers)) {
                 throw Error(`Samples for timbre '${this.timbre}' have not been loaded!`);
             }
+            this.globalGain.set({ gain: 1 });
             this.samplers[this.timbre].triggerAttackRelease(frequency, 0.5);            
         }
     }

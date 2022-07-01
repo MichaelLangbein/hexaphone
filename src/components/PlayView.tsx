@@ -2,7 +2,7 @@ import {
   IonContent, IonPage, IonFab, IonFabButton, IonIcon,
   IonFabList, IonModal
 } from '@ionic/react';
-import { arrowDownCircle, help, musicalNote, radioOutline } from 'ionicons/icons';
+import { arrowDownCircle, earOutline, earSharp, help, musicalNote, radioOutline } from 'ionicons/icons';
 import React from 'react';
 import { InstrumentedBoard as Board } from './Board';
 import { Welcome } from './Welcome';
@@ -10,6 +10,7 @@ import { TimbreSelection } from './TimbreSelection';
 import { TonalitySelection } from './TonalitySelection';
 import { Tutorial } from './tutorial/Tutorial';
 import { BoardService } from '../state/board.svc';
+import { OscConfiguration } from './OscConfiguration';
 
 
 interface PlayViewState {
@@ -17,6 +18,7 @@ interface PlayViewState {
   showTutorialModal: boolean;
   showTimbreModal: boolean;
   showTonalityModal: boolean;
+  showOscModal: boolean;
 }
 
 const boardSvc = new BoardService();
@@ -31,7 +33,8 @@ class PlayView extends React.Component<{}, PlayViewState> {
       showWelcomeModal: true,
       showTutorialModal: false,
       showTimbreModal: false,
-      showTonalityModal: false
+      showTonalityModal: false,
+      showOscModal: false
     }
     this.boardContainer = React.createRef<HTMLDivElement>();
   }
@@ -94,21 +97,34 @@ class PlayView extends React.Component<{}, PlayViewState> {
             }}></TonalitySelection>
           </IonModal>
 
+          <IonModal isOpen={this.state.showOscModal}>
+            <OscConfiguration boardSvc={boardSvc} onDone={() => {
+              this.setState({
+                ...this.state,
+                showOscModal: false
+              });
+            }}></OscConfiguration>
+          </IonModal>
+
           <Board boardSvc={boardSvc}></Board>
 
           <IonFab vertical="top" horizontal="end" slot="fixed">
             <IonFabButton>
               <IonIcon icon={arrowDownCircle} />
+              
             </IonFabButton>
             <IonFabList>
               <IonFabButton color="medium" onClick={() => this.setState((oldState, props) => ({ ...oldState, showTonalityModal: true }))}>
-                <span title="tonality"><IonIcon icon={musicalNote}></IonIcon></span>
+                <span title="tonality" style={{display: 'flex', alignItems: 'center'}}><IonIcon icon={musicalNote}></IonIcon></span>
               </IonFabButton>
               <IonFabButton color="medium" onClick={() => this.setState((oldState, props) => ({ ...oldState, showTimbreModal: true }))}>
-                <span title="timbre"><IonIcon icon={radioOutline}></IonIcon></span>
+                <span title="timbre" style={{display: 'flex', alignItems: 'center'}}><IonIcon icon={earOutline}></IonIcon></span>
+              </IonFabButton>
+              <IonFabButton color="medium"  onClick={() => this.setState((oldState, props) => ({ ...oldState, showOscModal: true }))}>
+                <span title="tutorial" style={{display: 'flex', alignItems: 'center'}}><IonIcon icon={radioOutline}></IonIcon></span>
               </IonFabButton>
               <IonFabButton color="medium"  onClick={() => this.setState((oldState, props) => ({ ...oldState, showTutorialModal: true }))}>
-                <span title="tutorial"><IonIcon icon={help}></IonIcon></span>
+                <span title="tutorial" style={{display: 'flex', alignItems: 'center'}}><IonIcon icon={help}></IonIcon></span>
               </IonFabButton>
             </IonFabList>
           </IonFab>

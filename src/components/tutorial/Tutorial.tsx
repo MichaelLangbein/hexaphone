@@ -1,5 +1,5 @@
 import { IonFabButton, IonIcon } from '@ionic/react';
-import { arrowDownCircle, help, musicalNote, radioOutline } from 'ionicons/icons';
+import { arrowDownCircle, earOutline, help, musicalNote, radioOutline } from 'ionicons/icons';
 import React from 'react';
 import { Observable } from 'rxjs';
 import { delay, distinct, filter, first, take, takeUntil, takeWhile, tap } from 'rxjs/operators';
@@ -241,7 +241,7 @@ export class Tutorial extends React.Component<{ boardSvc: BoardService, onClosed
                         <div style={{ flex: '1 0 auto', maxWidth: '80%' }} >... and find the <b>timbre</b> settings.</div>
                         <div style={{ flex: '1 0 auto' }} >
                             <IonFabButton color="medium" style={{ width: '50px', height: '50px', margin: '5px 0 5px 5px' }}>
-                                <span title="tonality"><IonIcon icon={radioOutline}></IonIcon></span>
+                                <span title="tonality"><IonIcon icon={earOutline}></IonIcon></span>
                             </IonFabButton>
                         </div>
                     </div>
