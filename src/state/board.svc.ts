@@ -4,7 +4,7 @@ import { Board } from '../hexaphone/Board';
 import { Tonality } from '../hexaphone/helpers/music';
 import { Synthesizer, Timbre } from '../hexaphone/Synthesizer';
 import { defaultFillColorFunction, defaultLineColorFunction } from '../hexaphone/helpers/board';
-import { first, flatMap, mergeMap } from 'rxjs/operators';
+import { first, mergeMap } from 'rxjs/operators';
 
 
 
@@ -24,28 +24,17 @@ import { first, flatMap, mergeMap } from 'rxjs/operators';
  */
 export class BoardService {
 
-    /* @ts-ignore */
-    private canvas: HTMLCanvasElement;
-    /* @ts-ignore */
-    private width: number;
-    /* @ts-ignore */
-    private height: number;
-    /* @ts-ignore */
-    private renderer: Renderer;
-    /* @ts-ignore */
-    private board: Board;
-    /* @ts-ignore */
-    private synth: Synthesizer;
-    /* @ts-ignore */
-    private fillColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => string;
-    /* @ts-ignore */
-    private lineColor: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => string;
-    /** @ts-ignore */
-    private tonality$: BehaviorSubject<Tonality>;
-    /** @ts-ignore */
-    private timbre$: BehaviorSubject<Timbre>;
-    /** @ts-ignore */
-    private timbreLoaded$: Observable<boolean>;
+    private canvas!: HTMLCanvasElement;
+    private width!: number;
+    private height!: number;
+    private renderer!: Renderer;
+    private board!: Board;
+    private synth!: Synthesizer;
+    private fillColor!: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => string;
+    private lineColor!: (frequency: number, x: number, y: number, alpha: number, beta: number, gamma: number) => string;
+    private tonality$!: BehaviorSubject<Tonality>;
+    private timbre$!: BehaviorSubject<Timbre>;
+    private timbreLoaded$!: Observable<boolean>;
     private touches$ = new Subject<number[]>();
 
     public initBoard(

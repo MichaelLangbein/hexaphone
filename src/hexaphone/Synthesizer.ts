@@ -2,9 +2,45 @@ import { Compressor, Gain, PolySynth, Sampler,
     start, Synth, ToneAudioNode } from 'tone';
 import { from, Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-
+// import * as osc from 'osc';
 
 export type Timbre = 'basic' | 'piano' | 'violin' | 'saxophone' | 'harp';
+
+
+
+
+class OscOut {
+
+    private connection: WebSocket | undefined;
+    private channel: string = 'hexaphone';
+
+    constructor() {}
+
+    public connect(targetUrl: string, targetPort: number = 4562, targetChannel: string = 'hexaphone'): Observable<boolean> {
+        return new Observable<boolean>((subscription) => {
+            this.connection = new WebSocket(`ws://${targetUrl}:${targetPort}/${targetChannel}`);
+            this.connection.onopen = (e) => {
+                this.channel = targetChannel;
+                subscription.next(true);
+                subscription.complete();
+            }
+        });
+    }
+
+    public play(frequency: number, force: number) {
+        if (this.connection) {
+            this.connection.send(JSON.stringify({
+                        frequency,
+                        force
+                    }));
+        }
+    }
+
+    public disconnect() {
+        this.connection = undefined;
+        this.channel = 'hexaphone';
+    }
+}
 
 
 export class Synthesizer {
@@ -15,6 +51,7 @@ export class Synthesizer {
     private polySynth: PolySynth;
     private samplers: {[timbre: string]: Sampler};
     private timbre: Timbre = 'basic';
+    // private osc = new OscOut();
 
     constructor() {
         // Compressor added before output to reduce crackling sound.
@@ -97,7 +134,6 @@ export class Synthesizer {
     public getTimbre(): Timbre {
         return this.timbre;
     }
-
 
     private getFileNames(timbre: Timbre) {
         const fileNames: {[key: string]: string} = {};

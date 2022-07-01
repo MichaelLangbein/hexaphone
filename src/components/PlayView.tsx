@@ -97,14 +97,14 @@ class PlayView extends React.Component<{}, PlayViewState> {
             }}></TonalitySelection>
           </IonModal>
 
-          <IonModal isOpen={this.state.showOscModal}>
+          {/* <IonModal isOpen={this.state.showOscModal}>
             <OscConfiguration boardSvc={boardSvc} onDone={() => {
               this.setState({
                 ...this.state,
                 showOscModal: false
               });
             }}></OscConfiguration>
-          </IonModal>
+          </IonModal> */}
 
           <Board boardSvc={boardSvc}></Board>
 
@@ -120,9 +120,9 @@ class PlayView extends React.Component<{}, PlayViewState> {
               <IonFabButton color="medium" onClick={() => this.setState((oldState, props) => ({ ...oldState, showTimbreModal: true }))}>
                 <span title="timbre" style={{display: 'flex', alignItems: 'center'}}><IonIcon icon={earOutline}></IonIcon></span>
               </IonFabButton>
-              <IonFabButton color="medium"  onClick={() => this.setState((oldState, props) => ({ ...oldState, showOscModal: true }))}>
-                <span title="tutorial" style={{display: 'flex', alignItems: 'center'}}><IonIcon icon={radioOutline}></IonIcon></span>
-              </IonFabButton>
+              {/* <IonFabButton color="medium"  onClick={() => this.setState((oldState, props) => ({ ...oldState, showOscModal: true }))}>
+                <span title="osc" style={{display: 'flex', alignItems: 'center'}}><IonIcon icon={radioOutline}></IonIcon></span>
+              </IonFabButton> */}
               <IonFabButton color="medium"  onClick={() => this.setState((oldState, props) => ({ ...oldState, showTutorialModal: true }))}>
                 <span title="tutorial" style={{display: 'flex', alignItems: 'center'}}><IonIcon icon={help}></IonIcon></span>
               </IonFabButton>
