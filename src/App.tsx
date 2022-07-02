@@ -1,5 +1,7 @@
 import { IonApp } from '@ionic/react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import PlayView from './components/PlayView';
+import PrivacyView from './components/PrivacyView';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -17,7 +19,12 @@ import './custom_styles.css';
 
 const App: React.FC = () => (
   <IonApp>
-    <PlayView />
+      <BrowserRouter>
+        <Routes>
+          <Route path='/'         element={<PlayView />}    ></Route>
+          <Route path='/privacy'  element={<PrivacyView />} ></Route>
+        </Routes>
+      </BrowserRouter>
   </IonApp>
 );
 

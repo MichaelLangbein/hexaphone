@@ -1,6 +1,6 @@
 {
   "name": "hexaphone",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "dependencies": {
     "@capacitor/android": "3.4.3",
@@ -13,11 +13,10 @@
     "@tonaljs/tonal": "^4.6.5",
     "d3-color": "^3.1.0",
     "ionicons": "^5.5.4",
-    "osc": "^2.4.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router": "^5.2.1",
-    "react-router-dom": "^5.3.0",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
     "rxjs": "^6.6.7",
     "tone": "^14.7.77",

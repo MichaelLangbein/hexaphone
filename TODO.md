@@ -1,16 +1,16 @@
 # TODOS
 
 
-1. Publish to android store
-2. OSC
-   1. Make an OSC client
-      1. Form to connect to an OSC server (SonicPi)
-      2. Then send all clicks out to server; deactivate immediate sound output.
-3. Nothing audible in safari
-4. Ads
+1. Ads
    1. https://www.google.com/adsense/signup/new/lead?gsessionid=uxpeelM8BpKF43M0T1CYRTqnFejkFP-peAKHNHRAl2I
    2. Google claims they cannot find that page.
       1. Maybe need to deploy google-header first?
+2. Publish to android store
+3. OSC
+   1. Make an OSC client
+      1. Form to connect to an OSC server (SonicPi)
+      2. Then send all clicks out to server; deactivate immediate sound output.
+4. Nothing audible in safari
 5. Layout
    1. Buttons: confirm click with `swoop` animation
    2. Loading: not only loader-spinner. Add '... loading' text and a larger spinner.
